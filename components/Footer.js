@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -5,8 +6,9 @@ export default function Footer() {
     <footer className="border-t hairline bg-paper-soft">
       <div className="container-px grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <span className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl uppercase tracking-wide text-gradient-gold">Parkolyn</span>
+          <Image src="/brand/crest.png" alt="Parkolyn Amsterdam crest" width={44} height={44} className="h-11 w-11 object-contain" />
+          <span className="mt-3 flex items-baseline gap-2">
+            <span className="font-brand text-2xl uppercase tracking-wide text-gradient-gold">Parkolyn</span>
             <span className="text-[9px] uppercase tracking-[0.25em] text-ink-dim">Amsterdam</span>
           </span>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-dim">

@@ -1,4 +1,4 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Antic_Didone, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,6 +11,15 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+});
+
+// Brand wordmark only ("Parkolyn Amsterdam" in the header/footer/logo
+// spots) — matched to the client's logo reference. Not used for other
+// headings, which stay on Playfair Display.
+const anticDidone = Antic_Didone({
+  variable: "--font-brand",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const inter = Inter({
@@ -27,7 +36,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} h-full`}>
+    <html lang="en" className={`${playfair.variable} ${anticDidone.variable} ${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col antialiased">
         <GrainOverlay />
         <CartProvider>

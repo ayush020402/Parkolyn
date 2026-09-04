@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import Testimonials from "@/components/Testimonials";
 import ScrollReveal, { Stagger, StaggerItem } from "@/components/ScrollReveal";
@@ -26,33 +27,46 @@ export default function AboutPage() {
   return (
     <div className="pb-24">
       <section className="container-px py-20">
-        <ScrollReveal as="div" className="max-w-2xl">
-          <span className="text-xs uppercase tracking-[0.35em] text-gold">Our Story</span>
-          <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">
-            Identity, born in Amsterdam
-          </h1>
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <ScrollReveal>
+            <span className="text-xs uppercase tracking-[0.35em] text-gold">Our Story</span>
+            <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">
+              Identity, born in Amsterdam
+            </h1>
 
-          <p className="mt-8 font-serif text-xl italic leading-relaxed text-ink sm:text-2xl">
-            It starts at dusk, on a canal where the water turns the colour of
-            brass and the whole city smells faintly of rain on stone.
-          </p>
-          <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
-            That&apos;s the feeling Parkolyn Amsterdam was built to bottle — not a
-            season, not a trend, but something you carry with you. We started
-            with a stubborn idea: what you choose to wear, a scent, a shade,
-            a cut of fabric, should say something true about you, not just
-            something pleasant. So instead of chasing what sells fastest, we
-            chose to build slowly. Small batches. Honest materials. A house
-            that grows one chapter at a time, instead of all at once.
-          </p>
-          <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
-            Fragrance is where that story begins. It&apos;s our debut chapter —
-            still in production, still made by hand — and open to anyone
-            willing to walk this early stretch with us. Beauty and apparel
-            are the chapters after this one. This website, like the house
-            itself, is still being written.
-          </p>
-        </ScrollReveal>
+            <p className="mt-8 font-serif text-xl italic leading-relaxed text-ink sm:text-2xl">
+              It starts at dusk, on a canal where the water turns the colour of
+              brass and the whole city smells faintly of rain on stone.
+            </p>
+            <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
+              That&apos;s the feeling Parkolyn Amsterdam was built to bottle — not a
+              season, not a trend, but something you carry with you. We started
+              with a stubborn idea: what you choose to wear, a scent, a shade,
+              a cut of fabric, should say something true about you, not just
+              something pleasant. So instead of chasing what sells fastest, we
+              chose to build slowly. Small batches. Honest materials. A house
+              that grows one chapter at a time, instead of all at once.
+            </p>
+            <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
+              Fragrance is where that story begins. It&apos;s our debut chapter —
+              still in production, still made by hand — and open to anyone
+              willing to walk this early stretch with us. Beauty and apparel
+              are the chapters after this one. This website, like the house
+              itself, is still being written.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.15} className="hidden justify-center lg:flex">
+            <Image
+              src="/brand/crest.png"
+              alt="Parkolyn Amsterdam crest"
+              width={420}
+              height={420}
+              className="h-auto w-full max-w-sm object-contain"
+              priority
+            />
+          </ScrollReveal>
+        </div>
       </section>
 
       <section className="border-y hairline bg-paper-soft">

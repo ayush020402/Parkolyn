@@ -61,7 +61,7 @@ export default function Header() {
     >
       <div className={`container-px flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-20"}`}>
         <Link href="/" className="flex flex-col leading-none sm:flex-row sm:items-baseline sm:gap-2" onClick={() => setMobileOpen(false)}>
-          <span className="font-serif text-lg uppercase tracking-wide text-gradient-gold sm:text-2xl">Parkolyn</span>
+          <span className="font-brand text-lg uppercase tracking-wide text-gradient-gold sm:text-2xl">Parkolyn</span>
           <span className="text-[7px] uppercase tracking-[0.2em] text-ink-dim sm:text-[8px] sm:tracking-[0.25em]">Amsterdam</span>
         </Link>
 

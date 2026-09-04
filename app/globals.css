@@ -23,6 +23,7 @@
   --color-gold-light: var(--color-gold-light);
   --color-gold-deep: var(--color-gold-deep);
   --font-serif: var(--font-playfair);
+  --font-brand: var(--font-brand);
   --font-sans: var(--font-inter);
 }
 
