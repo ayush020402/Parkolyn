@@ -28,38 +28,38 @@ export default function ContactPage() {
 
       <div className="mt-12 grid gap-12 md:grid-cols-2">
         {sent ? (
-          <p className="rounded-2xl border hairline bg-ink-card p-8 text-sm text-gold">
+          <p className="rounded-2xl border hairline bg-surface p-8 text-sm text-gold">
             Thank you — your message has been received. We&apos;ll be in touch shortly.
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <label className="block">
-              <span className="mb-1.5 block text-xs uppercase tracking-widest text-cream-dim">Name</span>
+              <span className="mb-1.5 block text-xs uppercase tracking-widest text-ink-dim">Name</span>
               <input
                 required
                 value={form.name}
                 onChange={(e) => update("name", e.target.value)}
-                className="w-full rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-cream focus:border-gold focus:outline-none"
+                className="w-full rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-ink focus:border-gold focus:outline-none"
               />
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs uppercase tracking-widest text-cream-dim">Email</span>
+              <span className="mb-1.5 block text-xs uppercase tracking-widest text-ink-dim">Email</span>
               <input
                 type="email"
                 required
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
-                className="w-full rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-cream focus:border-gold focus:outline-none"
+                className="w-full rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-ink focus:border-gold focus:outline-none"
               />
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-xs uppercase tracking-widest text-cream-dim">Message</span>
+              <span className="mb-1.5 block text-xs uppercase tracking-widest text-ink-dim">Message</span>
               <textarea
                 required
                 rows={5}
                 value={form.message}
                 onChange={(e) => update("message", e.target.value)}
-                className="w-full resize-none rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-cream focus:border-gold focus:outline-none"
+                className="w-full resize-none rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-ink focus:border-gold focus:outline-none"
               />
             </label>
             <button
@@ -71,7 +71,7 @@ export default function ContactPage() {
           </form>
         )}
 
-        <div className="space-y-6 text-sm text-cream-dim">
+        <div className="space-y-6 text-sm text-ink-dim">
           <div>
             <h3 className="text-xs uppercase tracking-[0.25em] text-gold">Email</h3>
             <p className="mt-2">hello@parkolyn.com</p>

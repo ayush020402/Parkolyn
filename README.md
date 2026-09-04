@@ -1,9 +1,13 @@
-# Parkolyn — Amsterdam Fragrance House
+# Parkolyn Amsterdam
 
-A premium ecommerce site for Parkolyn perfumes, built with Next.js and
-Tailwind CSS. Currently set up to take **pre-orders** while the first
-product batch is in production, with a dedicated space for ad photos/videos
-that can be dropped in at any time.
+A premium ecommerce site for Parkolyn Amsterdam — fragrance today, with
+beauty and apparel planned — built with Next.js and Tailwind CSS. Currently
+set up to take **pre-orders** while the first product batch is in
+production, with a dedicated space for ad photos/videos that can be dropped
+in at any time.
+
+Note: "Parkolyn Amsterdam" is the registered trademark and must always be
+used in full (not just "Parkolyn") in on-site copy, titles, and branding.
 
 ## Running locally
 
@@ -25,10 +29,11 @@ Open http://localhost:3000.
 
 ## Editing content
 
-- **Products** — `lib/products.js`. Add/edit/remove perfumes, prices, notes,
-  descriptions here. Each product needs `accent`/`accent2` colors used by
-  the placeholder bottle art (see below), or an `image` path once you have
-  real product photography.
+- **Products** — `lib/products.js`. Add/edit/remove products, prices, notes,
+  descriptions here. Each has a `category` field (only `"fragrance"` exists
+  today — set to `"cosmetics"` / `"apparel"` etc. when those lines launch).
+  Each product needs `accent`/`accent2` colors used by the placeholder
+  bottle art (see below), or an `image` path once you have real photography.
 - **Ad photos/videos** — `lib/media.js` lists the tiles shown in the
   homepage "Studio" section and the `/media` page. Drop real files into
   `public/media/ads/` and update the matching entry's `type` to `"image"`

@@ -29,14 +29,14 @@ export default function Testimonials() {
       {TESTIMONIALS.map((t) => (
         <motion.figure
           key={t.name}
-          whileHover={{ y: -5, borderColor: "rgba(201,169,98,0.4)" }}
+          whileHover={{ y: -5, borderColor: "rgba(150,116,42,0.4)" }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          className="rounded-2xl border hairline bg-ink-card p-7"
+          className="rounded-2xl border hairline bg-surface p-7"
         >
           <span className="font-serif text-3xl text-gold">&ldquo;</span>
-          <blockquote className="mt-1 text-sm leading-relaxed text-cream-dim">{t.quote}</blockquote>
+          <blockquote className="mt-1 text-sm leading-relaxed text-ink-dim">{t.quote}</blockquote>
           <figcaption className="mt-5 text-xs uppercase tracking-[0.2em] text-gold">
-            {t.name} <span className="text-cream-dim/60 normal-case tracking-normal">— {t.role}</span>
+            {t.name} <span className="text-ink-dim/60 normal-case tracking-normal">— {t.role}</span>
           </figcaption>
         </motion.figure>
       ))}

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   const product = getProductBySlug(slug);
   if (!product) return {};
   return {
-    title: `${product.name} — Parkolyn`,
+    title: `${product.name} — Parkolyn Amsterdam`,
     description: product.description,
   };
 }
@@ -30,10 +30,10 @@ export default async function ProductPage({ params }) {
 
   return (
     <div className="container-px py-16">
-      <nav className="mb-8 text-xs text-cream-dim">
-        <Link href="/shop" className="hover:text-gold">Shop</Link>
+      <nav className="mb-8 text-xs text-ink-dim">
+        <Link href="/perfumes" className="hover:text-gold">Perfumes</Link>
         <span className="mx-2">/</span>
-        <span className="text-cream">{product.name}</span>
+        <span className="text-ink">{product.name}</span>
       </nav>
 
       <div className="grid gap-12 md:grid-cols-2">
@@ -53,36 +53,36 @@ export default async function ProductPage({ params }) {
         <ScrollReveal delay={0.1} y={16} className="flex flex-col">
           <span className="text-xs uppercase tracking-[0.3em] text-gold">{product.family}</span>
           <h1 className="mt-2 font-serif text-4xl">{product.name}</h1>
-          <p className="mt-2 text-sm italic text-cream-dim">{product.tagline}</p>
+          <p className="mt-2 text-sm italic text-ink-dim">{product.tagline}</p>
 
           <div className="mt-5 flex items-baseline gap-3">
             <span className="text-2xl text-gold">{formatINR(product.price)}</span>
             {product.mrp && (
-              <span className="text-sm text-cream-dim/60 line-through">{formatINR(product.mrp)}</span>
+              <span className="text-sm text-ink-dim/60 line-through">{formatINR(product.mrp)}</span>
             )}
-            <span className="text-xs text-cream-dim">{product.volume}</span>
+            <span className="text-xs text-ink-dim">{product.volume}</span>
           </div>
 
-          <p className="mt-6 text-sm leading-relaxed text-cream-dim">{product.description}</p>
+          <p className="mt-6 text-sm leading-relaxed text-ink-dim">{product.description}</p>
 
           <dl className="mt-8 space-y-3 border-y hairline py-6 text-sm">
             <div className="flex gap-4">
-              <dt className="w-20 shrink-0 text-cream-dim">Top</dt>
+              <dt className="w-20 shrink-0 text-ink-dim">Top</dt>
               <dd>{product.notes.top}</dd>
             </div>
             <div className="flex gap-4">
-              <dt className="w-20 shrink-0 text-cream-dim">Heart</dt>
+              <dt className="w-20 shrink-0 text-ink-dim">Heart</dt>
               <dd>{product.notes.heart}</dd>
             </div>
             <div className="flex gap-4">
-              <dt className="w-20 shrink-0 text-cream-dim">Base</dt>
+              <dt className="w-20 shrink-0 text-ink-dim">Base</dt>
               <dd>{product.notes.base}</dd>
             </div>
           </dl>
 
           <div className="mt-8">
             <AddToCartButton product={product} />
-            <p className="mt-4 text-xs text-cream-dim/70">
+            <p className="mt-4 text-xs text-ink-dim/70">
               This fragrance is in its first production run. Reserving now
               secures your bottle from the earliest batch — we&apos;ll notify you
               the moment it ships.

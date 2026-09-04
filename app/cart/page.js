@@ -12,9 +12,9 @@ export default function CartPage() {
     return (
       <div className="container-px flex flex-col items-center justify-center py-32 text-center">
         <h1 className="font-serif text-3xl">Your bag is empty</h1>
-        <p className="mt-3 text-sm text-cream-dim">Explore the collection to find your signature.</p>
+        <p className="mt-3 text-sm text-ink-dim">Explore the collection to find your signature.</p>
         <Link
-          href="/shop"
+          href="/perfumes"
           className="mt-8 rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
         >
           Shop the Collection
@@ -38,11 +38,11 @@ export default function CartPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-serif text-lg">{item.name}</p>
-                    <p className="text-xs text-cream-dim">{item.volume}</p>
+                    <p className="text-xs text-ink-dim">{item.volume}</p>
                   </div>
                   <button
                     onClick={() => removeItem(item.slug)}
-                    className="text-xs text-cream-dim hover:text-gold"
+                    className="text-xs text-ink-dim hover:text-gold"
                   >
                     Remove
                   </button>
@@ -50,14 +50,14 @@ export default function CartPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center rounded-full border hairline">
                     <button
-                      className="px-3 py-1.5 text-cream-dim hover:text-gold"
+                      className="px-3 py-1.5 text-ink-dim hover:text-gold"
                       onClick={() => updateQty(item.slug, item.qty - 1)}
                     >
                       −
                     </button>
                     <span className="w-8 text-center text-sm">{item.qty}</span>
                     <button
-                      className="px-3 py-1.5 text-cream-dim hover:text-gold"
+                      className="px-3 py-1.5 text-ink-dim hover:text-gold"
                       onClick={() => updateQty(item.slug, item.qty + 1)}
                     >
                       +
@@ -70,13 +70,13 @@ export default function CartPage() {
           ))}
         </ul>
 
-        <div className="h-fit rounded-2xl border hairline bg-ink-card p-7">
+        <div className="h-fit rounded-2xl border hairline bg-surface p-7">
           <h2 className="font-serif text-xl">Order Summary</h2>
-          <div className="mt-5 flex justify-between text-sm text-cream-dim">
+          <div className="mt-5 flex justify-between text-sm text-ink-dim">
             <span>Subtotal</span>
             <span>{formatINR(subtotal)}</span>
           </div>
-          <div className="mt-2 flex justify-between text-sm text-cream-dim">
+          <div className="mt-2 flex justify-between text-sm text-ink-dim">
             <span>Shipping</span>
             <span>Calculated at checkout</span>
           </div>

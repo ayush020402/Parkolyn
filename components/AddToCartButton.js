@@ -19,7 +19,7 @@ export default function AddToCartButton({ product }) {
     <div className="flex items-center gap-4">
       <div className="flex items-center rounded-full border hairline">
         <button
-          className="px-4 py-2.5 text-cream-dim transition hover:text-gold"
+          className="px-4 py-2.5 text-ink-dim transition hover:text-gold"
           onClick={() => setQty((q) => Math.max(1, q - 1))}
           aria-label="Decrease quantity"
         >
@@ -27,7 +27,7 @@ export default function AddToCartButton({ product }) {
         </button>
         <span className="w-8 text-center text-sm">{qty}</span>
         <button
-          className="px-4 py-2.5 text-cream-dim transition hover:text-gold"
+          className="px-4 py-2.5 text-ink-dim transition hover:text-gold"
           onClick={() => setQty((q) => q + 1)}
           aria-label="Increase quantity"
         >

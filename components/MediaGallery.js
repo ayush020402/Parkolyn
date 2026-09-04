@@ -12,12 +12,11 @@ function fileExists(src) {
 }
 
 function MediaTile({ item }) {
-  const spanClass = item.size === "large" ? "sm:col-span-2 sm:row-span-2" : "";
   const exists = item.src ? fileExists(item.src) : false;
 
   if (exists && item.type === "video") {
     return (
-      <div className={`group relative overflow-hidden rounded-2xl border hairline transition-colors duration-300 hover:border-gold/40 ${spanClass}`}>
+      <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border hairline transition-colors duration-300 hover:border-gold/40">
         <video className="h-full w-full object-cover transition duration-700 group-hover:scale-105" src={item.src} autoPlay muted loop playsInline />
         {item.title && (
           <span className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-3 py-1 text-[10px] uppercase tracking-widest text-gold backdrop-blur">
@@ -30,8 +29,8 @@ function MediaTile({ item }) {
 
   if (exists && item.type === "image") {
     return (
-      <div className={`group relative overflow-hidden rounded-2xl border hairline transition-colors duration-300 hover:border-gold/40 ${spanClass}`}>
-        <Image src={item.src} alt={item.title || "Parkolyn"} fill className="object-cover transition duration-700 group-hover:scale-105" />
+      <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border hairline transition-colors duration-300 hover:border-gold/40">
+        <Image src={item.src} alt={item.title || "Parkolyn Amsterdam"} fill className="object-cover transition duration-700 group-hover:scale-105" />
         {item.title && (
           <span className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-3 py-1 text-[10px] uppercase tracking-widest text-gold backdrop-blur">
             {item.title}
@@ -42,20 +41,18 @@ function MediaTile({ item }) {
   }
 
   return (
-    <div
-      className={`group relative flex min-h-[220px] flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-dashed hairline bg-ink-card p-6 text-center transition-colors duration-300 hover:border-gold/40 ${spanClass}`}
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(201,169,98,0.12),transparent_60%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
-      <span className="relative font-serif text-2xl text-gradient-gold transition-transform duration-500 group-hover:scale-105">Parkolyn</span>
-      <p className="relative text-xs uppercase tracking-[0.25em] text-cream-dim">{item.title}</p>
-      <p className="relative max-w-[220px] text-[11px] text-cream-dim/60">{item.caption}</p>
+    <div className="group relative flex aspect-[3/4] flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-dashed hairline bg-surface p-6 text-center transition-colors duration-300 hover:border-gold/40">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(150,116,42,0.1),transparent_60%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
+      <span className="relative font-serif text-2xl text-gradient-gold transition-transform duration-500 group-hover:scale-105">Parkolyn Amsterdam</span>
+      <p className="relative text-xs uppercase tracking-[0.25em] text-ink-dim">{item.title}</p>
+      <p className="relative max-w-[220px] text-[11px] text-ink-dim/60">{item.caption}</p>
     </div>
   );
 }
 
 export default function MediaGallery() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
       {MEDIA_ITEMS.map((item) => (
         <MediaTile key={item.id} item={item} />
       ))}

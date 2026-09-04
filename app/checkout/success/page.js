@@ -13,17 +13,17 @@ export default async function CheckoutSuccessPage({ searchParams }) {
       </span>
       <h1 className="mt-6 font-serif text-3xl">Reservation Confirmed</h1>
       {order && (
-        <p className="mt-2 text-sm text-cream-dim">
+        <p className="mt-2 text-sm text-ink-dim">
           Order reference <span className="text-gold">{order}</span>
         </p>
       )}
-      <p className="mt-4 max-w-md text-sm leading-relaxed text-cream-dim">
-        Thank you for reserving with Parkolyn. Our team will reach out shortly
+      <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-dim">
+        Thank you for reserving with Parkolyn Amsterdam. Our team will reach out shortly
         to confirm details and finalize payment as your fragrance completes
         production.
       </p>
       <Link
-        href="/shop"
+        href="/perfumes"
         className="mt-9 rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
       >
         Continue Shopping

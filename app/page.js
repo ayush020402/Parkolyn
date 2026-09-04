@@ -1,24 +1,21 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import SectionHeading from "@/components/SectionHeading";
-import ProductCard from "@/components/ProductCard";
+import CategoryShowcase from "@/components/CategoryShowcase";
 import MediaGallery from "@/components/MediaGallery";
 import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
 import Marquee from "@/components/Marquee";
-import ScrollReveal, { Stagger, StaggerItem } from "@/components/ScrollReveal";
-import { PRODUCTS } from "@/lib/products";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const STATS = [
-  { value: "6", label: "Signature Scents" },
+  { value: "3", label: "Category Houses" },
   { value: "100%", label: "Original Ingredients" },
   { value: "1", label: "Amsterdam Studio" },
   { value: "24H", label: "Order Response" },
 ];
 
 export default function Home() {
-  const featured = PRODUCTS.filter((p) => p.featured);
-
   return (
     <>
       <Hero />
@@ -33,34 +30,27 @@ export default function Home() {
         ]}
       />
 
-      {/* Featured products */}
+      {/* Category showcase */}
       <section className="container-px py-24">
-        <ScrollReveal className="flex flex-wrap items-end justify-between gap-6">
+        <ScrollReveal as="div">
           <SectionHeading
-            eyebrow="The Collection"
-            title="Fragrances everyone is talking about"
-            description="Each bottle currently open for pre-order while our first production run is finished by hand."
+            eyebrow="Explore"
+            title="Three houses, one signature"
+            description="Perfume leads the way — cosmetics and clothing are next. Reserve from the debut collection now, or join the list for what's coming."
           />
-          <Link href="/shop" className="text-sm text-gold transition hover:text-gold-light">
-            View all →
-          </Link>
         </ScrollReveal>
-        <Stagger className="mt-12 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4" staggerDelay={0.08}>
-          {featured.map((product) => (
-            <StaggerItem key={product.slug}>
-              <ProductCard product={product} />
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <div className="mt-12">
+          <CategoryShowcase />
+        </div>
       </section>
 
       {/* Stats strip */}
-      <section className="border-y hairline bg-ink-soft">
+      <section className="border-y hairline bg-paper-soft">
         <ScrollReveal as="div" className="container-px grid grid-cols-2 gap-8 py-16 sm:grid-cols-4">
           {STATS.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="font-serif text-4xl text-gradient-gold sm:text-5xl">{stat.value}</p>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.2em] text-cream-dim">{stat.label}</p>
+              <p className="mt-2 text-[11px] uppercase tracking-[0.2em] text-ink-dim">{stat.label}</p>
             </div>
           ))}
         </ScrollReveal>
@@ -72,26 +62,31 @@ export default function Home() {
           <ScrollReveal>
             <span className="text-xs uppercase tracking-[0.35em] text-gold">Our Story</span>
             <h2 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-              A fragrance house built on identity, not imitation.
+              A house built on identity, not imitation.
             </h2>
-            <p className="mt-5 text-sm leading-relaxed text-cream-dim sm:text-base">
-              Parkolyn began in Amsterdam with a simple belief: fragrance should
-              say something true about the person wearing it. While our first
-              collection completes production, we&apos;re building this space with
-              you — the story, the process, and the people behind every bottle.
+            <p className="mt-5 font-serif text-lg italic leading-relaxed text-ink">
+              It starts at dusk, on an Amsterdam canal that smells faintly of
+              rain on stone.
+            </p>
+            <p className="mt-4 text-sm leading-relaxed text-ink-dim sm:text-base">
+              That&apos;s the feeling we set out to bottle — not a season, not
+              a trend, but something true about the person wearing it.
+              Fragrance is our debut chapter, with beauty and apparel to
+              follow. While that first collection completes production,
+              we&apos;re building this space with you.
             </p>
             <Link
               href="/about"
-              className="mt-7 inline-block rounded-full border hairline px-7 py-3 text-sm text-cream transition hover:border-gold hover:text-gold"
+              className="mt-7 inline-block rounded-full border hairline px-7 py-3 text-sm text-ink transition hover:border-gold hover:text-gold"
             >
               Read Our Story
             </Link>
           </ScrollReveal>
-          <ScrollReveal delay={0.15} className="relative aspect-square overflow-hidden rounded-2xl border hairline bg-[radial-gradient(circle_at_30%_20%,rgba(201,169,98,0.18),transparent_60%)]">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-serif text-5xl text-gradient-gold">Parkolyn</span>
+          <ScrollReveal delay={0.15} className="relative aspect-square overflow-hidden rounded-2xl border hairline bg-[radial-gradient(circle_at_30%_20%,rgba(150,116,42,0.14),transparent_60%)]">
+            <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
+              <span className="font-serif text-3xl leading-tight text-gradient-gold sm:text-4xl">Parkolyn Amsterdam</span>
             </div>
-            <div className="absolute inset-0 border border-gold/10" />
+            <div className="absolute inset-0 border border-gold/15" />
           </ScrollReveal>
         </div>
       </section>
@@ -117,10 +112,10 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y hairline bg-ink-soft">
+      <section className="border-y hairline bg-paper-soft">
         <div className="container-px py-24">
           <ScrollReveal as="div">
-            <SectionHeading eyebrow="Reviews" title="Loved by fragrance enthusiasts" align="center" />
+            <SectionHeading eyebrow="Reviews" title="Loved by our early supporters" align="center" />
           </ScrollReveal>
           <ScrollReveal delay={0.1} className="mt-12">
             <Testimonials />

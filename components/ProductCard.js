@@ -17,10 +17,10 @@ export default function ProductCard({ product }) {
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border hairline bg-ink-card transition-colors duration-300 hover:border-gold/50"
-      style={{ boxShadow: "0 0 0 rgba(201,169,98,0)" }}
+      className="group relative flex flex-col overflow-hidden rounded-2xl border hairline bg-surface transition-colors duration-300 hover:border-gold/50"
+      style={{ boxShadow: "0 0 0 rgba(150,116,42,0)" }}
     >
-      <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ boxShadow: "0 20px 60px -15px rgba(201,169,98,0.25)" }} />
+      <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ boxShadow: "0 20px 60px -15px rgba(150,116,42,0.2)" }} />
 
       <Link href={`/product/${product.slug}`} className="relative block aspect-[3/4] overflow-hidden">
         {product.image ? (
@@ -56,7 +56,7 @@ export default function ProductCard({ product }) {
             e.preventDefault();
             addItem(product, 1);
           }}
-          className="absolute inset-x-3 bottom-3 translate-y-4 rounded-full bg-cream/95 py-2.5 text-center text-xs font-medium uppercase tracking-widest text-ink opacity-0 backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+          className="absolute inset-x-3 bottom-3 translate-y-4 rounded-full bg-surface/95 py-2.5 text-center text-xs font-medium uppercase tracking-widest text-ink opacity-0 backdrop-blur transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
         >
           Quick Add
         </button>
@@ -67,13 +67,13 @@ export default function ProductCard({ product }) {
         <Link href={`/product/${product.slug}`}>
           <h3 className="mt-1 font-serif text-lg transition-colors group-hover:text-gold-light">{product.name}</h3>
         </Link>
-        <p className="mt-1 text-xs text-cream-dim">{product.tagline}</p>
+        <p className="mt-1 text-xs text-ink-dim">{product.tagline}</p>
 
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
             <span className="text-gold">{formatINR(product.price)}</span>
             {product.mrp && (
-              <span className="text-xs text-cream-dim/60 line-through">{formatINR(product.mrp)}</span>
+              <span className="text-xs text-ink-dim/60 line-through">{formatINR(product.mrp)}</span>
             )}
           </div>
           <button
@@ -81,7 +81,7 @@ export default function ProductCard({ product }) {
               e.preventDefault();
               addItem(product, 1);
             }}
-            className="hidden rounded-full border hairline px-3 py-1.5 text-xs text-cream-dim transition hover:border-gold hover:text-gold sm:block"
+            className="hidden rounded-full border hairline px-3 py-1.5 text-xs text-ink-dim transition hover:border-gold hover:text-gold sm:block"
           >
             Add
           </button>

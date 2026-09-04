@@ -41,7 +41,7 @@ export default function HeroContent({ hasVideo }) {
       <div className="absolute inset-0">
         {hasVideo ? (
           <video
-            className="h-full w-full object-cover opacity-60"
+            className="h-full w-full object-cover opacity-70"
             src="/media/hero.mp4"
             autoPlay
             muted
@@ -49,32 +49,32 @@ export default function HeroContent({ hasVideo }) {
             playsInline
           />
         ) : (
-          <div className="relative h-full w-full bg-[radial-gradient(ellipse_at_top,_#1a140c,_#0a0907_65%)]">
+          <div className="relative h-full w-full bg-[radial-gradient(ellipse_at_top,_#f2efe8,_#ffffff_65%)]">
             <motion.div
               style={{ left: glowX, top: glowY }}
-              className="absolute h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/20 blur-[110px] animate-pulse-glow"
+              className="absolute h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[110px] animate-pulse-glow"
             />
-            <div className="absolute left-[15%] top-[20%] h-2 w-2 rounded-full bg-gold/70 animate-float-slow" />
-            <div className="absolute right-[18%] top-[65%] h-1.5 w-1.5 rounded-full bg-gold-light/60 animate-float-slow" style={{ animationDelay: "1.5s" }} />
-            <div className="absolute right-[35%] top-[15%] h-1 w-1 rounded-full bg-gold/50 animate-float-slow" style={{ animationDelay: "3s" }} />
+            <div className="absolute left-[15%] top-[20%] h-2 w-2 rounded-full bg-gold/60 animate-float-slow" />
+            <div className="absolute right-[18%] top-[65%] h-1.5 w-1.5 rounded-full bg-gold-deep/50 animate-float-slow" style={{ animationDelay: "1.5s" }} />
+            <div className="absolute right-[35%] top-[15%] h-1 w-1 rounded-full bg-gold/40 animate-float-slow" style={{ animationDelay: "3s" }} />
 
             <motion.div
               style={{ x: bottleX, y: bottleY }}
-              className="absolute left-1/2 top-1/2 h-[560px] w-[400px] -translate-x-1/2 -translate-y-1/2 opacity-30"
+              className="absolute left-1/2 top-1/2 h-[560px] w-[400px] -translate-x-1/2 -translate-y-1/2 opacity-40"
             >
-              <BottleArt accent="#c9a962" accent2="#1a140c" className="h-full w-full drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]" />
+              <BottleArt accent="#96742a" accent2="#f2efe8" className="h-full w-full drop-shadow-[0_30px_60px_rgba(23,19,16,0.18)]" />
             </motion.div>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/70" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-paper via-paper/40 to-paper/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-paper/50 via-transparent to-transparent" />
       </div>
 
       <div className="container-px relative z-10 w-full">
         <motion.div variants={wordVariants} initial="hidden" animate="show" className="max-w-2xl">
           <motion.div variants={lineVariants} className="flex items-center gap-3">
             <span className="h-px w-8 bg-gold" />
-            <span className="text-xs uppercase tracking-[0.4em] text-gold">Amsterdam Fragrance House</span>
+            <span className="text-xs uppercase tracking-[0.4em] text-gold">Parkolyn Amsterdam</span>
           </motion.div>
 
           <h1 className="mt-6 font-serif text-5xl leading-[1.05] sm:text-6xl md:text-7xl">
@@ -86,20 +86,21 @@ export default function HeroContent({ hasVideo }) {
             </motion.span>
           </h1>
 
-          <motion.p variants={lineVariants} className="mt-6 max-w-md text-sm leading-relaxed text-cream-dim sm:text-base">
-            Parkolyn crafts fragrance as an expression of identity — not an
-            afterthought. Discover a collection currently in limited pre-order
-            production, ready to be reserved before it ships.
+          <motion.p variants={lineVariants} className="mt-6 max-w-md text-sm leading-relaxed text-ink-dim sm:text-base">
+            Parkolyn Amsterdam creates fragrance, beauty, and apparel as an
+            expression of identity — not an afterthought. Our debut fragrance
+            collection is open for limited pre-order, ready to be reserved
+            before it ships.
           </motion.p>
 
           <motion.div variants={lineVariants} className="mt-9 flex flex-wrap gap-4">
-            <Link href="/shop" className="group relative overflow-hidden rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-ink transition">
+            <Link href="/perfumes" className="group relative overflow-hidden rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-ink transition">
               <span className="relative z-10">Shop the Collection</span>
               <span className="absolute inset-0 -translate-x-full bg-gold-light transition-transform duration-500 group-hover:translate-x-0" />
             </Link>
             <Link
               href="/about"
-              className="rounded-full border hairline px-8 py-3.5 text-sm text-cream transition hover:border-gold hover:text-gold"
+              className="rounded-full border hairline px-8 py-3.5 text-sm text-ink transition hover:border-gold hover:text-gold"
             >
               Our Story
             </Link>
@@ -111,13 +112,13 @@ export default function HeroContent({ hasVideo }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-cream-dim/60 sm:flex"
+        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-ink-dim/70 sm:flex"
       >
         <span>Scroll</span>
         <motion.span
           animate={{ scaleY: [0.3, 1, 0.3], opacity: [0.3, 1, 0.3] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="h-8 w-px origin-top bg-cream-dim/40"
+          className="h-8 w-px origin-top bg-ink-dim/40"
         />
       </motion.div>
     </section>

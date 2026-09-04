@@ -44,9 +44,9 @@ export default function CheckoutPage() {
     return (
       <div className="container-px flex flex-col items-center justify-center py-32 text-center">
         <h1 className="font-serif text-3xl">Nothing to check out</h1>
-        <p className="mt-3 text-sm text-cream-dim">Your bag is currently empty.</p>
+        <p className="mt-3 text-sm text-ink-dim">Your bag is currently empty.</p>
         <Link
-          href="/shop"
+          href="/perfumes"
           className="mt-8 rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
         >
           Shop the Collection
@@ -58,10 +58,10 @@ export default function CheckoutPage() {
   return (
     <div className="container-px py-16">
       <h1 className="font-serif text-3xl">Checkout</h1>
-      <p className="mt-2 max-w-lg text-sm text-cream-dim">
-        Reserve your bottles now. Since Parkolyn is in its first production
-        run, orders are confirmed by our team and payment is finalized before
-        shipping.
+      <p className="mt-2 max-w-lg text-sm text-ink-dim">
+        Reserve your bottles now. Since Parkolyn Amsterdam&apos;s debut collection
+        is in its first production run, orders are confirmed by our team and
+        payment is finalized before shipping.
       </p>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-3">
@@ -120,18 +120,18 @@ export default function CheckoutPage() {
           >
             {loading ? "Processing…" : "Confirm Reservation"}
           </button>
-          <p className="text-xs text-cream-dim/70">
+          <p className="text-xs text-ink-dim/70">
             Payment gateway integration is in progress — confirming here
             reserves your order and our team will follow up to complete
             payment securely.
           </p>
         </form>
 
-        <div className="h-fit rounded-2xl border hairline bg-ink-card p-7">
+        <div className="h-fit rounded-2xl border hairline bg-surface p-7">
           <h2 className="font-serif text-xl">Order Summary</h2>
           <ul className="mt-5 space-y-3 text-sm">
             {items.map((item) => (
-              <li key={item.slug} className="flex justify-between text-cream-dim">
+              <li key={item.slug} className="flex justify-between text-ink-dim">
                 <span>
                   {item.name} × {item.qty}
                 </span>
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
           background: transparent;
           padding: 0.75rem 1rem;
           font-size: 0.875rem;
-          color: var(--color-cream);
+          color: var(--color-ink);
         }
         .input:focus {
           outline: none;
@@ -168,7 +168,7 @@ export default function CheckoutPage() {
 function Field({ label, required, children }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs uppercase tracking-widest text-cream-dim">
+      <span className="mb-1.5 block text-xs uppercase tracking-widest text-ink-dim">
         {label} {required && <span className="text-gold">*</span>}
       </span>
       {children}
