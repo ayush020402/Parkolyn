@@ -5,7 +5,10 @@ export default function Footer() {
     <footer className="border-t hairline bg-paper-soft">
       <div className="container-px grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <span className="font-serif text-2xl text-gradient-gold">Parkolyn Amsterdam</span>
+          <span className="flex items-baseline gap-2">
+            <span className="font-serif text-2xl uppercase tracking-wide text-gradient-gold">Parkolyn</span>
+            <span className="text-[9px] uppercase tracking-[0.25em] text-ink-dim">Amsterdam</span>
+          </span>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-dim">
             Parkolyn Amsterdam is a luxury house crafting fragrance, beauty, and
             apparel as an expression of identity, not just a finishing touch.

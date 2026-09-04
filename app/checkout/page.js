@@ -1,10 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { formatINR } from "@/lib/products";
+
+const SAVED_DETAILS_KEY = "parkolyn_checkout_details_v1";
+
+function loadRazorpayScript() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
@@ -12,9 +25,34 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "", notes: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [remembered, setRemembered] = useState(false);
+
+  useEffect(() => {
+    // One-time hydration-safe read from localStorage (an external system) on
+    // mount, kept separate from server render to avoid a hydration mismatch.
+    try {
+      const raw = window.localStorage.getItem(SAVED_DETAILS_KEY);
+      if (raw) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setForm((f) => ({ ...f, ...JSON.parse(raw) }));
+        setRemembered(true);
+      }
+    } catch {
+      // ignore corrupted storage
+    }
+  }, []);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  function saveDetails() {
+    try {
+      const { name, email, phone, address } = form;
+      window.localStorage.setItem(SAVED_DETAILS_KEY, JSON.stringify({ name, email, phone, address }));
+    } catch {
+      // ignore storage write failures (e.g. private browsing)
+    }
   }
 
   async function handleSubmit(e) {
@@ -30,9 +68,61 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
 
-      const orderId = data.orderId;
-      clearCart();
-      router.push(`/checkout/success?order=${orderId}`);
+      const scriptOk = await loadRazorpayScript();
+      if (!scriptOk || !window.Razorpay) {
+        throw new Error("Could not load the payment gateway. Please check your connection and try again.");
+      }
+
+      await new Promise((resolve, reject) => {
+        const rzp = new window.Razorpay({
+          key: data.keyId,
+          amount: data.amount,
+          currency: data.currency,
+          order_id: data.razorpayOrderId,
+          name: "Parkolyn Amsterdam",
+          description: "Debut Fragrance Collection — Pre-Order",
+          prefill: {
+            name: form.name,
+            email: form.email,
+            contact: form.phone,
+          },
+          notes: {
+            address: form.address,
+          },
+          theme: { color: "#96742a" },
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch("/api/checkout/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(response),
+              });
+              const verifyData = await verifyRes.json();
+              if (!verifyRes.ok || !verifyData.verified) {
+                reject(new Error(verifyData.error || "Payment verification failed. If you were charged, please contact support with your payment ID."));
+                return;
+              }
+              saveDetails();
+              clearCart();
+              router.push(`/checkout/success?order=${data.orderId}`);
+              resolve();
+            } catch {
+              reject(new Error("Could not verify payment. If you were charged, please contact support."));
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              reject(new Error("Payment was cancelled. You can try again when you're ready."));
+            },
+          },
+        });
+
+        rzp.on("payment.failed", function (response) {
+          reject(new Error(response.error?.description || "Payment failed. Please try again."));
+        });
+
+        rzp.open();
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,9 +149,15 @@ export default function CheckoutPage() {
     <div className="container-px py-16">
       <h1 className="font-serif text-3xl">Checkout</h1>
       <p className="mt-2 max-w-lg text-sm text-ink-dim">
-        Reserve your bottles now. Since Parkolyn Amsterdam&apos;s debut collection
-        is in its first production run, orders are confirmed by our team and
-        payment is finalized before shipping.
+        Reserve your bottles now with secure payment via Razorpay. Since
+        Parkolyn Amsterdam&apos;s debut collection is in its first production
+        run, our team will confirm your order and keep you updated as it
+        ships.
+      </p>
+      <p className="mt-3 max-w-lg text-xs text-ink-dim/70">
+        {remembered
+          ? "Welcome back — we've filled in your saved details below. Update anything that's changed."
+          : "No account needed. Check out as a guest — we'll remember these details on this device for a faster checkout next time."}
       </p>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-3">
@@ -118,12 +214,11 @@ export default function CheckoutPage() {
             disabled={loading}
             className="w-full rounded-full bg-gold py-3.5 text-sm font-medium text-ink transition hover:bg-gold-light disabled:opacity-60"
           >
-            {loading ? "Processing…" : "Confirm Reservation"}
+            {loading ? "Processing…" : `Proceed to Payment — ${formatINR(subtotal)}`}
           </button>
           <p className="text-xs text-ink-dim/70">
-            Payment gateway integration is in progress — confirming here
-            reserves your order and our team will follow up to complete
-            payment securely.
+            You&apos;ll be redirected to Razorpay&apos;s secure checkout to
+            complete payment. We never see or store your card details.
           </p>
         </form>
 

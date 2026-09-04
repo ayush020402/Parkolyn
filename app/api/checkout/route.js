@@ -1,35 +1,19 @@
 import { NextResponse } from "next/server";
+import { getRazorpay } from "@/lib/razorpay";
+import { getProductBySlug } from "@/lib/products";
 
-// ---------------------------------------------------------------------------
-// PAYMENT GATEWAY INTEGRATION POINT
-// ---------------------------------------------------------------------------
-// This route currently just validates the order and returns a mock order id
-// so the full checkout UX (cart -> shipping -> review -> confirmation) works
-// end to end while a real payment gateway decision is pending.
-//
-// To go live with a real gateway:
-//
-//   Razorpay:
-//     1. npm install razorpay
-//     2. Create an order server-side with razorpay.orders.create({...})
-//        and return { orderId, razorpayOrderId, amount, keyId } instead of
-//        the mock response below.
-//     3. On the client, open Razorpay Checkout with that order, then verify
-//        the payment signature in a new /api/checkout/verify route before
-//        marking the order paid.
-//
-//   Stripe:
-//     1. npm install stripe
-//     2. Create a Checkout Session or PaymentIntent server-side with the
-//        cart total and redirect the client to session.url (Checkout) or
-//        confirm client-side with Stripe.js (PaymentIntent).
-//
-// Either way: never trust a client-submitted total — recompute the amount
-// from lib/products.js on the server before creating the payment order.
-// ---------------------------------------------------------------------------
+// Creates a Razorpay order for the current cart. The client then opens
+// Razorpay Checkout with the returned order id; payment is confirmed via
+// POST /api/checkout/verify (see that route for signature verification).
 
 export async function POST(request) {
-  const body = await request.json();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
   const { items, customer } = body || {};
 
   if (!items || items.length === 0) {
@@ -39,11 +23,57 @@ export async function POST(request) {
     return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
   }
 
+  // Recompute the total server-side from the product catalogue — never
+  // trust a client-submitted price.
+  let subtotal = 0;
+  for (const item of items) {
+    const product = getProductBySlug(item.slug);
+    if (!product) {
+      return NextResponse.json({ error: `Unknown product: ${item.slug}` }, { status: 400 });
+    }
+    const qty = Number(item.qty);
+    if (!Number.isInteger(qty) || qty < 1) {
+      return NextResponse.json({ error: `Invalid quantity for ${item.slug}.` }, { status: 400 });
+    }
+    subtotal += product.price * qty;
+  }
+
+  const amountInPaise = Math.round(subtotal * 100);
+  if (amountInPaise < 100) {
+    return NextResponse.json({ error: "Order amount is below the minimum payable amount." }, { status: 400 });
+  }
+
   const orderId = `PARK-${Date.now().toString(36).toUpperCase()}`;
 
-  // TODO: persist the order (DB), send confirmation email, and — once a
-  // gateway is chosen — replace this mock response with a real payment
-  // order/session as described above.
+  try {
+    const razorpay = getRazorpay();
+    const razorpayOrder = await razorpay.orders.create({
+      amount: amountInPaise,
+      currency: "INR",
+      receipt: orderId,
+      notes: {
+        customerName: customer.name,
+        customerEmail: customer.email,
+      },
+    });
 
-  return NextResponse.json({ orderId, status: "pending_gateway_setup" });
+    return NextResponse.json({
+      orderId,
+      razorpayOrderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    });
+  } catch (err) {
+    const status = err?.statusCode === 401 ? 401 : 500;
+    return NextResponse.json(
+      {
+        error:
+          status === 401
+            ? "Payment gateway authentication failed."
+            : "Could not create payment order. Please try again.",
+      },
+      { status }
+    );
+  }
 }

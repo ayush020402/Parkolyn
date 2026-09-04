@@ -11,16 +11,16 @@ export default async function CheckoutSuccessPage({ searchParams }) {
           <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-      <h1 className="mt-6 font-serif text-3xl">Reservation Confirmed</h1>
+      <h1 className="mt-6 font-serif text-3xl">Payment Received</h1>
       {order && (
         <p className="mt-2 text-sm text-ink-dim">
           Order reference <span className="text-gold">{order}</span>
         </p>
       )}
       <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-dim">
-        Thank you for reserving with Parkolyn Amsterdam. Our team will reach out shortly
-        to confirm details and finalize payment as your fragrance completes
-        production.
+        Thank you for reserving with Parkolyn Amsterdam — your payment was
+        successful. Our team will reach out shortly to confirm shipping
+        details as your fragrance completes production.
       </p>
       <Link
         href="/perfumes"

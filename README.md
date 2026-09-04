@@ -22,8 +22,8 @@ Open http://localhost:3000.
 
 - Home, Shop, Product detail, Cart, Checkout, About, Studio (media/ads), Contact
 - Cart persists in the browser (localStorage) and has a slide-out drawer
-- Checkout collects shipping details and confirms a pre-order with a
-  reference number — see "Payment gateway" below for what's left
+- Checkout collects shipping details and takes real payment via Razorpay
+  Standard Checkout before confirming the order — see "Payment gateway" below
 - Floating WhatsApp chat button
 - Every page is mobile responsive
 
@@ -48,17 +48,38 @@ Open http://localhost:3000.
 - **WhatsApp number** — copy `.env.local.example` to `.env.local` and set
   `NEXT_PUBLIC_WHATSAPP_NUMBER`.
 
-## Payment gateway — not yet wired up
+## Payment gateway — Razorpay (test mode)
 
-Checkout currently confirms the order (name/email/phone/address + items)
-and shows a reference number, but does **not** charge a card yet — the
-team follows up to complete payment manually. This matches the "product
-still in production" stage.
+Checkout is wired up to Razorpay Standard Checkout end to end:
 
-When ready to take real payments, see the detailed comment in
-`app/api/checkout/route.js` for how to plug in Razorpay or Stripe. Recompute
-the total server-side from `lib/products.js` — never trust a client-sent
-amount.
+1. `POST /api/checkout` (`app/api/checkout/route.js`) recomputes the total
+   server-side from `lib/products.js` (never trusts a client-sent amount)
+   and creates a Razorpay order via `lib/razorpay.js`.
+2. The client (`app/checkout/page.js`) opens the Razorpay Checkout modal
+   with that order.
+3. On success, `POST /api/checkout/verify`
+   (`app/api/checkout/verify/route.js`) verifies the HMAC-SHA256 payment
+   signature before the order is treated as paid. A failed/mismatched
+   signature is rejected — the cart is only cleared after verification
+   succeeds.
+
+Set these in `.env.local` (copy from `.env.local.example`):
+
+```
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+NEXT_PUBLIC_RAZORPAY_KEY_ID=
+```
+
+Get keys from the [Razorpay dashboard](https://dashboard.razorpay.com/app/keys)
+— use test-mode keys (`rzp_test_...`) until you're ready to go live. Test
+with [Razorpay's test cards](https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/build-integration/#test-integration)
+(e.g. card `4111 1111 1111 1111`, any future expiry, any CVV).
+
+There's no database yet, so a successful payment isn't persisted anywhere
+beyond the Razorpay dashboard itself — see the `TODO` in
+`app/api/checkout/verify/route.js` for where to add order storage once one
+exists.
 
 ## Deployment
 

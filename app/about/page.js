@@ -82,7 +82,7 @@ export default function AboutPage() {
         </ScrollReveal>
       </section>
 
-      <section className="border-t hairline bg-paper-soft">
+      <section className="border-t hairline">
         <div className="container-px py-20">
           <ScrollReveal as="div">
             <SectionHeading eyebrow="Reviews" title="What early supporters are saying" align="center" />
