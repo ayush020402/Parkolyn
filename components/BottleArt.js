@@ -3,7 +3,7 @@
 // exists. Once you have a real shot, set `image` on the product in
 // lib/products.js and it will be used instead automatically (see ProductCard).
 
-export default function BottleArt({ accent = "#96742a", accent2 = "#f2efe8", className = "" }) {
+export default function BottleArt({ accent = "#96742a", accent2 = "#f2f2f2", className = "" }) {
   const id = accent.replace("#", "");
   return (
     <svg
@@ -13,10 +13,6 @@ export default function BottleArt({ accent = "#96742a", accent2 = "#f2efe8", cla
       aria-label="Parkolyn Amsterdam bottle illustration"
     >
       <defs>
-        <radialGradient id={`bg-${id}`} cx="50%" cy="32%" r="80%">
-          <stop offset="0%" stopColor={accent} stopOpacity="0.16" />
-          <stop offset="100%" stopColor={accent} stopOpacity="0" />
-        </radialGradient>
         <linearGradient id={`glass-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor={accent} stopOpacity="0.92" />
           <stop offset="45%" stopColor={accent} stopOpacity="0.4" />
@@ -33,8 +29,8 @@ export default function BottleArt({ accent = "#96742a", accent2 = "#f2efe8", cla
           <stop offset="100%" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <radialGradient id={`floor-${id}`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#17140f" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#17140f" stopOpacity="0" />
+          <stop offset="0%" stopColor="#161616" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#161616" stopOpacity="0" />
         </radialGradient>
         <linearGradient id={`rim-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#fff" stopOpacity="0.7" />
@@ -42,8 +38,7 @@ export default function BottleArt({ accent = "#96742a", accent2 = "#f2efe8", cla
         </linearGradient>
       </defs>
 
-      <rect width="300" height="400" fill="#fcfcfb" />
-      <rect width="300" height="400" fill={`url(#bg-${id})`} />
+      <rect width="300" height="400" fill="#fcfcfc" />
 
       {/* soft ground shadow */}
       <ellipse cx="150" cy="354" rx="86" ry="16" fill={`url(#floor-${id})`} />
@@ -75,12 +70,12 @@ export default function BottleArt({ accent = "#96742a", accent2 = "#f2efe8", cla
       <rect x="103" y="196" width="94" height="3" fill={accent} opacity="0.55" />
 
       {/* label */}
-      <rect x="119" y="220" width="62" height="72" rx="2" fill="#fbfaf7" />
+      <rect x="119" y="220" width="62" height="72" rx="2" fill="#fafafa" />
       <rect x="119" y="220" width="62" height="72" rx="2" fill="none" stroke={accent} strokeOpacity="0.35" />
-      <line x1="130" y1="238" x2="170" y2="238" stroke="#17140f" strokeWidth="1" opacity="0.55" />
-      <line x1="130" y1="248" x2="170" y2="248" stroke="#17140f" strokeWidth="1" opacity="0.4" />
-      <circle cx="150" cy="268" r="9" fill="none" stroke="#17140f" strokeWidth="1" opacity="0.55" />
-      <line x1="136" y1="284" x2="164" y2="284" stroke="#17140f" strokeWidth="0.75" opacity="0.3" />
+      <line x1="130" y1="238" x2="170" y2="238" stroke="#161616" strokeWidth="1" opacity="0.55" />
+      <line x1="130" y1="248" x2="170" y2="248" stroke="#161616" strokeWidth="1" opacity="0.4" />
+      <circle cx="150" cy="268" r="9" fill="none" stroke="#161616" strokeWidth="1" opacity="0.55" />
+      <line x1="136" y1="284" x2="164" y2="284" stroke="#161616" strokeWidth="0.75" opacity="0.3" />
 
       {/* left rim light */}
       <path d="M101 112 C101 112 99 118 99 128 V320 C99 336 111 348 127 348" fill="none" stroke={`url(#rim-${id})`} strokeWidth="2" />

@@ -82,7 +82,7 @@ export default function Home() {
               Read Our Story
             </Link>
           </ScrollReveal>
-          <ScrollReveal delay={0.15} className="relative aspect-square overflow-hidden rounded-2xl border hairline bg-[radial-gradient(circle_at_30%_20%,rgba(150,116,42,0.14),transparent_60%)]">
+          <ScrollReveal delay={0.15} className="relative aspect-square overflow-hidden rounded-2xl border hairline bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.04),transparent_60%)]">
             <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
               <span className="font-brand text-3xl uppercase leading-tight tracking-wide text-gradient-gold sm:text-4xl">Parkolyn</span>
               <span className="mt-2 text-xs uppercase tracking-[0.3em] text-ink-dim">Amsterdam</span>

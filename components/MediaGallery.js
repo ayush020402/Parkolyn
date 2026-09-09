@@ -42,7 +42,7 @@ function MediaTile({ item }) {
 
   return (
     <div className="group relative flex aspect-[3/4] flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-dashed hairline bg-surface p-6 text-center transition-colors duration-300 hover:border-gold/40">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(150,116,42,0.1),transparent_60%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(0,0,0,0.035),transparent_60%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
       <span className="relative flex flex-col items-center transition-transform duration-500 group-hover:scale-105">
         <span className="font-brand text-2xl uppercase tracking-wide text-gradient-gold">Parkolyn</span>
         <span className="mt-1 text-[10px] uppercase tracking-[0.25em] text-ink-dim">Amsterdam</span>

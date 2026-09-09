@@ -49,7 +49,7 @@ export default function HeroContent({ hasVideo }) {
             playsInline
           />
         ) : (
-          <div className="relative h-full w-full bg-[radial-gradient(ellipse_at_top,_#f2efe8,_#ffffff_65%)]">
+          <div className="relative h-full w-full bg-[radial-gradient(ellipse_at_top,_#f5f5f5,_#ffffff_65%)]">
             <motion.div
               style={{ left: glowX, top: glowY }}
               className="absolute h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[110px] animate-pulse-glow"
@@ -62,7 +62,7 @@ export default function HeroContent({ hasVideo }) {
               style={{ x: bottleX, y: bottleY }}
               className="absolute left-1/2 top-1/2 h-[560px] w-[400px] -translate-x-1/2 -translate-y-1/2 opacity-40"
             >
-              <BottleArt accent="#96742a" accent2="#f2efe8" className="h-full w-full drop-shadow-[0_30px_60px_rgba(23,19,16,0.18)]" />
+              <BottleArt accent="#96742a" accent2="#f2f2f2" className="h-full w-full drop-shadow-[0_30px_60px_rgba(0,0,0,0.18)]" />
             </motion.div>
           </div>
         )}

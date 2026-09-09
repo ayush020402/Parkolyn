@@ -2,11 +2,11 @@
 
 :root {
   --color-paper: #ffffff;
-  --color-paper-soft: #f7f6f4;
+  --color-paper-soft: #ffffff;
   --color-surface: #ffffff;
-  --color-line: rgba(23, 19, 16, 0.09);
-  --color-ink: #171410;
-  --color-ink-dim: #6b6357;
+  --color-line: rgba(0, 0, 0, 0.09);
+  --color-ink: #161616;
+  --color-ink-dim: #6b6b6b;
   --color-gold: #96742a;
   --color-gold-light: #d4b876;
   --color-gold-deep: #6b5220;
