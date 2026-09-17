@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { PerfumeIcon, CosmeticsIcon, ClothingIcon } from "./CategoryIcons";
+import { PerfumeIcon } from "./CategoryIcons";
 
-const ICONS = { perfume: PerfumeIcon, cosmetics: CosmeticsIcon, clothing: ClothingIcon };
+const ICONS = { perfume: PerfumeIcon };
 
 export default function MegaMenuPanel({ category, onNavigate }) {
   const Icon = ICONS[category.icon];

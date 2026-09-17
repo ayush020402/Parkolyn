@@ -1,47 +1,57 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import SectionHeading from "@/components/SectionHeading";
-import CategoryShowcase from "@/components/CategoryShowcase";
+import ProductCard from "@/components/ProductCard";
 import MediaGallery from "@/components/MediaGallery";
 import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
 import Marquee from "@/components/Marquee";
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal, { Stagger, StaggerItem } from "@/components/ScrollReveal";
+import { PRODUCTS } from "@/lib/products";
 
 const STATS = [
-  { value: "3", label: "Category Houses" },
+  { value: "6", label: "Signature Scents" },
   { value: "100%", label: "Original Ingredients" },
-  { value: "1", label: "Amsterdam Studio" },
+  { value: "12H+", label: "Long-Lasting Wear" },
   { value: "24H", label: "Order Response" },
 ];
 
 export default function Home() {
+  const featured = PRODUCTS.filter((p) => p.featured);
+
   return (
     <>
       <Hero />
 
       <Marquee
         items={[
-          "Amsterdam Crafted",
           "Reserve Before Launch",
           "Long-Lasting EDP",
           "Secure Checkout",
           "Handcrafted in Small Batches",
+          "Premium Ingredients",
         ]}
       />
 
-      {/* Category showcase */}
+      {/* Featured products */}
       <section className="container-px py-24">
-        <ScrollReveal as="div">
+        <ScrollReveal as="div" className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
-            eyebrow="Explore"
-            title="Three houses, one signature"
-            description="Perfume leads the way — cosmetics and clothing are next. Reserve from the debut collection now, or join the list for what's coming."
+            eyebrow="The Collection"
+            title="Fragrances everyone is talking about"
+            description="Each bottle currently open for pre-order while our first production run is finished by hand."
           />
+          <Link href="/perfumes" className="text-sm text-gold transition hover:text-gold-light">
+            View all →
+          </Link>
         </ScrollReveal>
-        <div className="mt-12">
-          <CategoryShowcase />
-        </div>
+        <Stagger className="mt-12 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4" staggerDelay={0.08}>
+          {featured.map((product) => (
+            <StaggerItem key={product.slug}>
+              <ProductCard product={product} />
+            </StaggerItem>
+          ))}
+        </Stagger>
       </section>
 
       {/* Stats strip */}
@@ -62,18 +72,19 @@ export default function Home() {
           <ScrollReveal>
             <span className="text-xs uppercase tracking-[0.35em] text-gold">Our Story</span>
             <h2 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-              A house built on identity, not imitation.
+              Built around one idea: unmistakable scent.
             </h2>
             <p className="mt-5 font-serif text-lg italic leading-relaxed text-ink">
-              It starts at dusk, on an Amsterdam canal that smells faintly of
-              rain on stone.
+              The best fragrances don&apos;t just smell good — they smell like
+              someone. That&apos;s the only brief we write to.
             </p>
             <p className="mt-4 text-sm leading-relaxed text-ink-dim sm:text-base">
-              That&apos;s the feeling we set out to bottle — not a season, not
-              a trend, but something true about the person wearing it.
-              Fragrance is our debut chapter, with beauty and apparel to
-              follow. While that first collection completes production,
-              we&apos;re building this space with you.
+              Every Parkolyn Amsterdam fragrance starts with a feeling, not a
+              formula copied off a bestseller list. We blend in small
+              batches, test obsessively, and only bottle a scent once it says
+              something true about the person wearing it — nothing diluted,
+              nothing rushed, nothing made to smell like everything else on
+              the shelf.
             </p>
             <Link
               href="/about"

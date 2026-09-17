@@ -5,17 +5,17 @@ import ScrollReveal, { Stagger, StaggerItem } from "@/components/ScrollReveal";
 
 export const metadata = {
   title: "Our Story — Parkolyn Amsterdam",
-  description: "The story behind Parkolyn Amsterdam, a luxury house crafting fragrance, beauty, and apparel.",
+  description: "The story behind Parkolyn Amsterdam — fragrance built around one idea: an unmistakable, honest signature scent.",
 };
 
 const VALUES = [
   {
     title: "Identity Over Imitation",
-    body: "Every product starts with a feeling, not a trend chart. We build things people wear as a signature, not a substitute.",
+    body: "Every fragrance starts with a feeling, not a trend chart. We build scents people wear as a signature, not a substitute.",
   },
   {
     title: "Slow, Deliberate Production",
-    body: "Small first-run batches, sourced materials, and hands-on quality checks — even if it means asking you to wait.",
+    body: "Small first-run batches, sourced ingredients, and hands-on quality checks — even if it means asking you to wait.",
   },
   {
     title: "Radical Transparency",
@@ -31,28 +31,27 @@ export default function AboutPage() {
           <ScrollReveal>
             <span className="text-xs uppercase tracking-[0.35em] text-gold">Our Story</span>
             <h1 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">
-              Identity, born in Amsterdam
+              A signature, not just a scent
             </h1>
 
             <p className="mt-8 font-serif text-xl italic leading-relaxed text-ink sm:text-2xl">
-              It starts at dusk, on a canal where the water turns the colour of
-              brass and the whole city smells faintly of rain on stone.
+              A great fragrance isn&apos;t the thing you wear. It&apos;s the
+              thing people remember after you&apos;ve left the room.
             </p>
             <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
-              That&apos;s the feeling Parkolyn Amsterdam was built to bottle — not a
-              season, not a trend, but something you carry with you. We started
-              with a stubborn idea: what you choose to wear, a scent, a shade,
-              a cut of fabric, should say something true about you, not just
-              something pleasant. So instead of chasing what sells fastest, we
-              chose to build slowly. Small batches. Honest materials. A house
-              that grows one chapter at a time, instead of all at once.
+              That&apos;s the whole idea behind Parkolyn Amsterdam. We started
+              with a stubborn belief: a fragrance should say something true
+              about the person wearing it, not just smell pleasant for an
+              hour and fade into the background. So we build slowly — small
+              batches, honest ingredients, and testing we refuse to rush.
             </p>
             <p className="mt-5 text-sm leading-relaxed text-ink-dim sm:text-base">
-              Fragrance is where that story begins. It&apos;s our debut chapter —
-              still in production, still made by hand — and open to anyone
-              willing to walk this early stretch with us. Beauty and apparel
-              are the chapters after this one. This website, like the house
-              itself, is still being written.
+              Every note is chosen for character, not cost. We&apos;d rather
+              use less of something real than more of something synthetic
+              just to hit a price point — which is why each fragrance in
+              this collection has its own identity: bold where it should be
+              bold, quiet where it should be quiet, instead of chasing
+              whatever&apos;s trending this season.
             </p>
           </ScrollReveal>
 
@@ -87,11 +86,9 @@ export default function AboutPage() {
           <span className="text-xs uppercase tracking-[0.35em] text-gold">Where We Are Today</span>
           <h2 className="mt-3 font-serif text-3xl">Currently in first production</h2>
           <p className="mt-5 text-sm leading-relaxed text-ink-dim">
-            The fragrance collection on this site is our debut chapter, open
-            for pre-order while our first batch is completed by hand —
-            beauty and apparel will follow. Reserving now secures your place
-            in the earliest run, and helps us bring Parkolyn Amsterdam to
-            life.
+            This fragrance collection is open for pre-order while our first
+            batch is completed by hand. Reserving now secures your place in
+            the earliest run.
           </p>
         </ScrollReveal>
       </section>

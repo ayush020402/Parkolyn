@@ -87,10 +87,9 @@ export default function HeroContent({ hasVideo }) {
           </h1>
 
           <motion.p variants={lineVariants} className="mt-6 max-w-md text-sm leading-relaxed text-ink-dim sm:text-base">
-            Parkolyn Amsterdam creates fragrance, beauty, and apparel as an
-            expression of identity — not an afterthought. Our debut fragrance
-            collection is open for limited pre-order, ready to be reserved
-            before it ships.
+            Parkolyn Amsterdam fragrances are built to be recognized, not just
+            worn — real ingredients, small batches, nothing diluted. Open for
+            limited pre-order, ready to be reserved before it ships.
           </motion.p>
 
           <motion.div variants={lineVariants} className="mt-9 flex flex-wrap gap-4">

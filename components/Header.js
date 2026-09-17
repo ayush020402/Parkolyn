@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -9,8 +10,6 @@ import MegaMenuPanel from "./MegaMenuPanel";
 
 const NAV_LINKS = [
   { href: "/perfumes", label: "Perfumes" },
-  { href: "/cosmetics", label: "Cosmetics" },
-  { href: "/clothing", label: "Clothing" },
   { href: "/about", label: "Our Story" },
   { href: "/media", label: "Studio" },
   { href: "/contact", label: "Contact" },
@@ -55,44 +54,27 @@ export default function Header() {
       animate={{ y: hidden ? "-100%" : "0%" }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       onMouseLeave={scheduleClose}
-      className={`sticky top-0 z-40 border-b transition-all duration-300 ${
-        scrolled ? "border-gold/20 bg-paper/92 backdrop-blur-md" : "hairline bg-paper/85 backdrop-blur-md"
-      }`}
+      className="sticky top-0 z-40 bg-paper shadow-sm"
     >
-      <div className={`container-px flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-20"}`}>
-        <Link href="/" className="flex flex-col leading-none sm:flex-row sm:items-baseline sm:gap-2" onClick={() => setMobileOpen(false)}>
-          <span className="font-brand text-lg uppercase tracking-wide text-gradient-gold sm:text-2xl">Parkolyn</span>
-          <span className="text-[7px] uppercase tracking-[0.2em] text-ink-dim sm:text-[8px] sm:tracking-[0.25em]">Amsterdam</span>
+      {/* Logo row */}
+      <div className={`grid grid-cols-[1fr_auto_1fr] items-center container-px transition-all duration-300 ${scrolled ? "py-2.5" : "py-4"}`}>
+        <div />
+
+        <Link href="/" className="flex items-center justify-center gap-3" onClick={() => setMobileOpen(false)}>
+          <Image src="/brand/crest.png" alt="" width={40} height={40} className={`object-contain transition-all duration-300 ${scrolled ? "h-8 w-8" : "h-10 w-10"}`} />
+          <span className="flex flex-col items-start leading-none">
+            <span className="font-brand text-xl uppercase tracking-wide text-gradient-gold sm:text-2xl">Parkolyn</span>
+            <span className="mt-1 text-[8px] uppercase tracking-[0.3em] text-ink-dim sm:text-[9px]">Amsterdam</span>
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onMouseEnter={() => openMenu(link.href)}
-              onFocus={() => openMenu(link.href)}
-              className={`group relative py-2 text-[11px] uppercase tracking-[0.15em] transition ${
-                activeMenu === link.href ? "text-gold" : "text-ink-dim hover:text-gold"
-              }`}
-            >
-              {link.label}
-              <span
-                className={`absolute -bottom-0.5 left-0 h-px bg-gold transition-all duration-300 ${
-                  activeMenu === link.href ? "w-full" : "w-0 group-hover:w-full"
-                }`}
-              />
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-5">
+        <div className="flex items-center justify-end gap-5">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="relative text-ink-dim transition hover:text-gold"
+            className="relative text-ink transition hover:text-gold"
             aria-label="Open cart"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M3 3h2l.4 2M7 13h10l3-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H19M10 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             {count > 0 && (
@@ -113,7 +95,7 @@ export default function Header() {
             aria-label="Toggle menu"
             onClick={() => setMobileOpen((v) => !v)}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               {mobileOpen ? (
                 <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" />
               ) : (
@@ -124,6 +106,30 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Bold nav bar */}
+      <nav className="hidden bg-ink lg:block">
+        <div className="container-px flex items-center justify-center gap-10 py-3">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onMouseEnter={() => openMenu(link.href)}
+              onFocus={() => openMenu(link.href)}
+              className={`group relative py-1 text-xs uppercase tracking-[0.2em] transition ${
+                activeMenu === link.href ? "text-gold-light" : "text-paper/75 hover:text-gold-light"
+              }`}
+            >
+              {link.label}
+              <span
+                className={`absolute -bottom-1 left-0 h-px bg-gold-light transition-all duration-300 ${
+                  activeMenu === link.href ? "w-full" : "w-0 group-hover:w-full"
+                }`}
+              />
+            </Link>
+          ))}
+        </div>
+      </nav>
+
       <div onMouseEnter={() => clearTimeout(closeTimer.current)}>
         <AnimatePresence>
           {activeMenu && MENU_CATEGORIES[activeMenu] && (
@@ -133,7 +139,7 @@ export default function Header() {
       </div>
 
       {mobileOpen && (
-        <nav className="border-t hairline lg:hidden">
+        <nav className="border-t hairline bg-paper lg:hidden">
           <div className="container-px flex flex-col py-4">
             {NAV_LINKS.map((link) => {
               const category = MENU_CATEGORIES[link.href];

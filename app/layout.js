@@ -29,9 +29,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Parkolyn Amsterdam — Fragrance, Beauty & Apparel",
+  title: "Parkolyn Amsterdam — Signature Fragrances",
   description:
-    "Parkolyn Amsterdam is a luxury house crafting fragrance, beauty, and apparel. Our story, our passion, your signature. Shop the debut fragrance collection, crafted as an expression of identity.",
+    "Parkolyn Amsterdam crafts fragrance built around one idea: an unmistakable, honest signature scent. Our story, our passion, your signature. Shop the collection, open for pre-order.",
 };
 
 export default function RootLayout({ children }) {
