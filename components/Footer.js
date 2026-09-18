@@ -6,10 +6,13 @@ export default function Footer() {
     <footer className="border-t hairline bg-paper-soft">
       <div className="container-px grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <Image src="/brand/crest.png" alt="Parkolyn Amsterdam crest" width={44} height={44} className="h-11 w-11 object-contain" />
-          <span className="mt-3 flex items-baseline gap-2">
-            <span className="font-brand text-2xl uppercase tracking-wide text-gradient-gold">Parkolyn</span>
-            <span className="text-[9px] uppercase tracking-[0.25em] text-ink-dim">Amsterdam</span>
+          <Image src="/brand/crest.png" alt="Parkolyn Amsterdam crest" width={200} height={200} quality={100} className="h-11 w-11 object-contain" />
+          <span className="mt-3 block">
+            <span className="flex items-baseline gap-2">
+              <span className="font-brand text-2xl uppercase tracking-[0.06em] text-ink">Parkolyn</span>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-ink-dim">Amsterdam</span>
+            </span>
+            <span className="mt-1.5 block h-px w-28 bg-gradient-to-r from-gold to-transparent" />
           </span>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-dim">
             Parkolyn Amsterdam crafts fragrance built around one idea: a scent

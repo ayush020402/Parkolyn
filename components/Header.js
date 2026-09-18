@@ -60,12 +60,21 @@ export default function Header() {
       <div className={`grid grid-cols-[1fr_auto_1fr] items-center container-px transition-all duration-300 ${scrolled ? "py-2.5" : "py-4"}`}>
         <div />
 
-        <Link href="/" className="flex items-center justify-center gap-3" onClick={() => setMobileOpen(false)}>
-          <Image src="/brand/crest.png" alt="" width={40} height={40} className={`object-contain transition-all duration-300 ${scrolled ? "h-8 w-8" : "h-10 w-10"}`} />
-          <span className="flex flex-col items-start leading-none">
-            <span className="font-brand text-xl uppercase tracking-wide text-gradient-gold sm:text-2xl">Parkolyn</span>
-            <span className="mt-1 text-[8px] uppercase tracking-[0.3em] text-ink-dim sm:text-[9px]">Amsterdam</span>
-          </span>
+        <Link href="/" className="group flex items-center justify-center gap-3" onClick={() => setMobileOpen(false)}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.04 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-3"
+          >
+            <Image src="/brand/crest.png" alt="" width={200} height={200} quality={100} className={`object-contain transition-all duration-300 ${scrolled ? "h-8 w-8" : "h-10 w-10"}`} />
+            <span className="flex flex-col items-start leading-none">
+              <span className="font-brand text-2xl uppercase tracking-[0.06em] text-ink sm:text-3xl">Parkolyn</span>
+              <span className="mt-1.5 h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="mt-1.5 text-[8px] uppercase tracking-[0.35em] text-ink-dim sm:text-[9px]">Amsterdam</span>
+            </span>
+          </motion.div>
         </Link>
 
         <div className="flex items-center justify-end gap-5">
