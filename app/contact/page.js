@@ -4,18 +4,33 @@ import { useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // TODO: wire to an email/form provider (e.g. Resend, Formspree) once
-    // available — for now this confirms receipt so the flow is demoable.
-    setSent(true);
+    setError("");
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setSent(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -33,6 +48,17 @@ export default function ContactPage() {
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Honeypot — hidden from people, filled in by bots. */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={form.website}
+              onChange={(e) => update("website", e.target.value)}
+              className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            />
             <label className="block">
               <span className="mb-1.5 block text-xs uppercase tracking-widest text-ink-dim">Name</span>
               <input
@@ -62,11 +88,13 @@ export default function ContactPage() {
                 className="w-full resize-none rounded-xl border hairline bg-transparent px-4 py-3 text-sm text-ink focus:border-gold focus:outline-none"
               />
             </label>
+            {error && <p className="text-sm text-red-400">{error}</p>}
             <button
               type="submit"
-              className="rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
+              disabled={sending}
+              className="rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light disabled:opacity-60"
             >
-              Send Message
+              {sending ? "Sending…" : "Send Message"}
             </button>
           </form>
         )}

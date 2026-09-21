@@ -1,9 +1,14 @@
 import crypto from "crypto";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
+import { signaturesMatch } from "@/lib/razorpay";
+import { markOrderPaid, sendOrderEmailsOnce } from "@/lib/orders";
 
 // Verifies the HMAC-SHA256 signature Razorpay returns after a successful
 // Checkout payment. Only a signature that matches proves the payment is
-// genuine — never trust razorpay_payment_id alone.
+// genuine — never trust razorpay_payment_id alone. On success the order is
+// marked paid and the confirmation emails are queued. This is the fast path;
+// the Razorpay webhook (/api/webhooks/razorpay) is the reliable backstop for
+// when the customer's browser closes before reaching this route.
 
 export async function POST(request) {
   let body;
@@ -29,16 +34,25 @@ export async function POST(request) {
     .update(`${razorpay_order_id}|${razorpay_payment_id}`)
     .digest("hex");
 
-  const expected = Buffer.from(expectedSignature);
-  const received = Buffer.from(String(razorpay_signature));
-  const isValid = expected.length === received.length && crypto.timingSafeEqual(expected, received);
-
-  if (!isValid) {
+  if (!signaturesMatch(expectedSignature, razorpay_signature)) {
     return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
   }
 
-  // TODO: once a database exists, mark the matching order as paid here and
-  // store razorpay_order_id / razorpay_payment_id against it.
+  // The payment is genuine, so always tell the customer it worked — even if
+  // our database hiccups here, the webhook will finish the job.
+  try {
+    const { order, outcome } = await markOrderPaid({
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
+    });
+    if (order && outcome === "paid") {
+      after(() => sendOrderEmailsOnce(order));
+    } else {
+      console.error(`[verify] payment ${razorpay_payment_id} verified but order not marked paid (${outcome}).`);
+    }
+  } catch (err) {
+    console.error("[verify] could not mark order paid; relying on webhook:", err?.message ?? err);
+  }
 
   return NextResponse.json({ verified: true });
 }

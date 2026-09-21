@@ -74,10 +74,42 @@ Get keys from the [Razorpay dashboard](https://dashboard.razorpay.com/app/keys)
 with [Razorpay's test cards](https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/build-integration/#test-integration)
 (e.g. card `4111 1111 1111 1111`, any future expiry, any CVV).
 
-There's no database yet, so a successful payment isn't persisted anywhere
-beyond the Razorpay dashboard itself — see the `TODO` in
-`app/api/checkout/verify/route.js` for where to add order storage once one
-exists.
+## Orders, emails & webhook
+
+Every checkout now leaves a durable record and sends email:
+
+1. **Order storage (Supabase).** `POST /api/checkout` saves a `pending` row in
+   the `orders` table (items with prices, customer, shipping address, notes)
+   *before* the customer pays. It flips to `paid` once payment is confirmed.
+   Browse and filter orders in the Supabase dashboard -> Table Editor.
+2. **Two confirmation paths, one result.** The browser calls
+   `/api/checkout/verify`; Razorpay separately calls the webhook at
+   `/api/webhooks/razorpay` (`payment.captured`). Whichever arrives first marks
+   the order paid; the other is a harmless no-op, so the order is confirmed
+   even if the customer closes the tab right after paying.
+3. **Emails (Resend).** A paid order emails the customer a confirmation and
+   emails `ORDER_ALERT_EMAIL` a new-order alert (exactly once, even though two
+   paths can fire). The contact form emails you and stores the message;
+   newsletter signups are stored in `subscribers` and get a welcome email.
+   If an email fails, the order still saves; find unsent ones with
+   `select * from orders where status = 'paid' and emails_sent_at is null`.
+
+### One-time setup
+
+1. **Supabase** — create a project, open SQL Editor, run `supabase/schema.sql`.
+   Copy the project URL and the `service_role` key into `SUPABASE_URL` /
+   `SUPABASE_SERVICE_ROLE_KEY`.
+2. **Resend** — create an API key (`RESEND_API_KEY`), verify your sending
+   domain, and set `EMAIL_FROM` and `ORDER_ALERT_EMAIL`. Without a verified
+   domain Resend only delivers to your own account email.
+3. **Razorpay webhook** — Dashboard -> Settings -> Webhooks -> Add: URL
+   `https://<your-domain>/api/webhooks/razorpay`, event `payment.captured`,
+   and a secret of your choosing that you also set as
+   `RAZORPAY_WEBHOOK_SECRET`. Make sure payment auto-capture is enabled
+   (Settings -> Payment Capture), otherwise `payment.captured` never fires.
+   Locally, expose the dev server with a tunnel (e.g. `ngrok http 3000`).
+4. Add all the variables from `.env.local.example` to your hosting provider
+   (e.g. Vercel -> Project Settings -> Environment Variables) too.
 
 ## Deployment
 

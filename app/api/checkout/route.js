@@ -1,10 +1,17 @@
+import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { getRazorpay } from "@/lib/razorpay";
 import { getProductBySlug } from "@/lib/products";
+import { createPendingOrder } from "@/lib/orders";
 
-// Creates a Razorpay order for the current cart. The client then opens
-// Razorpay Checkout with the returned order id; payment is confirmed via
-// POST /api/checkout/verify (see that route for signature verification).
+// Creates a Razorpay order for the current cart and saves it in the database
+// as a "pending" order (items, address, amount). The client then opens
+// Razorpay Checkout with the returned order id; payment is confirmed by
+// POST /api/checkout/verify (browser) and/or the Razorpay webhook at
+// /api/webhooks/razorpay — whichever arrives first flips the order to "paid".
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const clip = (value, max) => String(value ?? "").trim().slice(0, max);
 
 export async function POST(request) {
   let body;
@@ -22,10 +29,21 @@ export async function POST(request) {
   if (!customer?.name || !customer?.email || !customer?.phone || !customer?.address) {
     return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
   }
+  const shipping = {
+    name: clip(customer.name, 120),
+    email: clip(customer.email, 254).toLowerCase(),
+    phone: clip(customer.phone, 30),
+    address: clip(customer.address, 500),
+    notes: clip(customer.notes, 1000),
+  };
+  if (!EMAIL_RE.test(shipping.email)) {
+    return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+  }
 
   // Recompute the total server-side from the product catalogue — never
   // trust a client-submitted price.
   let subtotal = 0;
+  const orderItems = [];
   for (const item of items) {
     const product = getProductBySlug(item.slug);
     if (!product) {
@@ -36,6 +54,7 @@ export async function POST(request) {
       return NextResponse.json({ error: `Invalid quantity for ${item.slug}.` }, { status: 400 });
     }
     subtotal += product.price * qty;
+    orderItems.push({ slug: product.slug, name: product.name, qty, price: product.price });
   }
 
   const amountInPaise = Math.round(subtotal * 100);
@@ -43,7 +62,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Order amount is below the minimum payable amount." }, { status: 400 });
   }
 
-  const orderId = `PARK-${Date.now().toString(36).toUpperCase()}`;
+  const orderId = `PARK-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
 
   try {
     const razorpay = getRazorpay();
@@ -52,9 +71,25 @@ export async function POST(request) {
       currency: "INR",
       receipt: orderId,
       notes: {
-        customerName: customer.name,
-        customerEmail: customer.email,
+        orderRef: orderId,
+        customerName: shipping.name,
+        customerEmail: shipping.email,
       },
+    });
+
+    // If this fails we must NOT let the customer pay — a paid order with no
+    // saved address would be unfulfillable. The unused Razorpay order is harmless.
+    await createPendingOrder({
+      order_ref: orderId,
+      razorpay_order_id: razorpayOrder.id,
+      amount_paise: amountInPaise,
+      currency: "INR",
+      items: orderItems,
+      customer_name: shipping.name,
+      customer_email: shipping.email,
+      customer_phone: shipping.phone,
+      shipping_address: shipping.address,
+      notes: shipping.notes || null,
     });
 
     return NextResponse.json({
@@ -65,6 +100,7 @@ export async function POST(request) {
       keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     });
   } catch (err) {
+    console.error("[checkout] could not create order:", err?.message ?? err);
     const status = err?.statusCode === 401 ? 401 : 500;
     return NextResponse.json(
       {

@@ -19,8 +19,9 @@ export default async function CheckoutSuccessPage({ searchParams }) {
       )}
       <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-dim">
         Thank you for reserving with Parkolyn Amsterdam — your payment was
-        successful. Our team will reach out shortly to confirm shipping
-        details as your fragrance completes production.
+        successful, and a confirmation email is on its way. Our team will
+        reach out shortly to confirm shipping details as your fragrance
+        completes production.
       </p>
       <Link
         href="/perfumes"

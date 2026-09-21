@@ -4,14 +4,30 @@ import { useState } from "react";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot — bots fill it, people never see it
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!email) return;
-    // TODO: wire to an email provider (Mailchimp/Resend/etc). For now this
-    // simply confirms receipt on the client so the flow is demoable end to end.
-    setSubmitted(true);
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -26,6 +42,16 @@ export default function Newsletter() {
       ) : (
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row">
           <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            className="absolute left-[-9999px] h-0 w-0 opacity-0"
+          />
+          <input
             type="email"
             required
             value={email}
@@ -35,12 +61,14 @@ export default function Newsletter() {
           />
           <button
             type="submit"
-            className="shrink-0 rounded-full bg-gold px-7 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
+            disabled={loading}
+            className="shrink-0 rounded-full bg-gold px-7 py-3 text-sm font-medium text-ink transition hover:bg-gold-light disabled:opacity-60"
           >
-            Notify Me
+            {loading ? "Joining…" : "Notify Me"}
           </button>
         </form>
       )}
+      {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
     </div>
   );
 }
