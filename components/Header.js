@@ -57,7 +57,7 @@ export default function Header() {
       className="sticky top-0 z-40 bg-paper shadow-sm"
     >
       {/* Logo row */}
-      <div className={`grid grid-cols-[1fr_auto_1fr] items-center container-px transition-all duration-300 ${scrolled ? "py-2.5" : "py-4"}`}>
+      <div className={`grid grid-cols-[1fr_auto_1fr] items-center container-px transition-all duration-300 ${scrolled ? "py-1.5" : "py-2"}`}>
         <div className="flex items-center justify-start">
           <button
             className="text-ink lg:hidden"
@@ -82,7 +82,15 @@ export default function Header() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-3"
           >
-            <Image src="/brand/crest-mark.png" alt="" width={200} height={200} quality={100} className={`object-contain transition-all duration-300 ${scrolled ? "h-9 w-9" : "h-12 w-12"}`} />
+            <Image
+              src="/brand/crest.png"
+              alt=""
+              width={300}
+              height={300}
+              quality={100}
+              priority
+              className={`object-contain transition-all duration-300 ${scrolled ? "h-12 w-12" : "h-14 w-14 sm:h-16 sm:w-16"}`}
+            />
             <span className="flex flex-col items-start leading-none">
               <span className="font-brand text-2xl uppercase tracking-[0.06em] text-ink sm:text-3xl">Parkolyn</span>
               <span className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.4em] text-ink-dim sm:text-[10px]">Amsterdam</span>

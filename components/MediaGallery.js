@@ -30,7 +30,7 @@ function MediaTile({ item }) {
   if (exists && item.type === "image") {
     return (
       <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border hairline transition-colors duration-300 hover:border-gold/40">
-        <Image src={item.src} alt={item.title || "Parkolyn Amsterdam"} fill className="object-cover transition duration-700 group-hover:scale-105" />
+        <Image src={item.src} alt={item.title || "Parkolyn Amsterdam"} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
         {item.title && (
           <span className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-3 py-1 text-[10px] uppercase tracking-widest text-gold backdrop-blur">
             {item.title}

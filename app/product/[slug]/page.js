@@ -39,7 +39,7 @@ export default async function ProductPage({ params }) {
       <div className="grid gap-12 md:grid-cols-2">
         <ScrollReveal y={16} className="relative aspect-[3/4] overflow-hidden rounded-2xl border hairline">
           {product.image ? (
-            <Image src={product.image} alt={product.name} fill className="object-cover" />
+            <Image src={product.image} alt={product.name} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           ) : (
             <BottleArt accent={product.accent} accent2={product.accent2} className="h-full w-full" />
           )}
