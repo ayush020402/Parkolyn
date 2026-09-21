@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: "/about", label: "Our Story" },
   { href: "/media", label: "Studio" },
   { href: "/contact", label: "Contact" },
+  { href: "/track", label: "Track Order" },
 ];
 
 export default function Header() {

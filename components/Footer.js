@@ -45,6 +45,7 @@ export default function Footer() {
         <div>
           <h3 className="text-xs uppercase tracking-[0.25em] text-gold">Support</h3>
           <ul className="mt-4 space-y-2 text-sm text-ink-dim">
+            <li><Link href="/track" className="hover:text-gold">Track Your Order</Link></li>
             <li><Link href="/cart" className="hover:text-gold">Your Cart</Link></li>
             <li>
               <a href="mailto:hello@parkolyn.com" className="hover:text-gold">

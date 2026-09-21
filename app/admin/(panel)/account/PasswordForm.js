@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionForm } from "@/components/admin/useActionForm";
+import { useActionForm } from "@/components/useActionForm";
 import { btnGold, Field, Notice, inputCls } from "@/components/admin/ui";
 import { changePasswordAction } from "./actions";
 

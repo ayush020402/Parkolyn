@@ -23,12 +23,20 @@ export default async function CheckoutSuccessPage({ searchParams }) {
         reach out shortly to confirm shipping details as your fragrance
         completes production.
       </p>
-      <Link
-        href="/perfumes"
-        className="mt-9 rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
-      >
-        Continue Shopping
-      </Link>
+      <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <Link
+          href="/track"
+          className="rounded-full bg-gold px-8 py-3 text-sm font-medium text-ink transition hover:bg-gold-light"
+        >
+          Track Your Order
+        </Link>
+        <Link
+          href="/perfumes"
+          className="rounded-full border hairline px-8 py-3 text-sm font-medium text-ink transition hover:border-gold hover:text-gold"
+        >
+          Continue Shopping
+        </Link>
+      </div>
     </div>
   );
 }

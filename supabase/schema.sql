@@ -2,7 +2,8 @@
 -- Run this once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 --
 -- Already running the first version of the schema? Don't run this — run
--- supabase/migrations/002_admin_panel.sql instead, which upgrades in place.
+-- supabase/migrations/002_admin_panel.sql and then 003_order_tracking.sql instead
+-- (they upgrade in place).
 --
 -- Row Level Security is enabled with NO policies on purpose: the public
 -- (anon) key can read/write nothing. Only the server, using the
@@ -51,6 +52,8 @@ create table if not exists public.orders (
   customer_name       text not null,
   customer_email      text not null,
   customer_phone      text not null,
+  customer_phone_key  text generated always as (right(regexp_replace(customer_phone, '\D', '', 'g'), 10)) stored,
+                                                     -- last 10 digits; lets "Track my order" match however the number was typed
   shipping_address    text not null,                 -- street / flat / landmark
   shipping_city       text,
   shipping_state      text,
@@ -81,6 +84,7 @@ create index if not exists orders_payment_created_idx on public.orders (payment_
 create index if not exists orders_customer_email_idx  on public.orders (customer_email);
 create index if not exists orders_city_idx            on public.orders (lower(shipping_city));
 create index if not exists orders_awb_idx             on public.orders (awb_number);
+create index if not exists orders_phone_key_idx       on public.orders (customer_phone_key);
 
 -- ------------------------------------------------------------ order timeline
 create table if not exists public.order_events (
@@ -142,6 +146,16 @@ create table if not exists public.admin_login_attempts (
 create index if not exists admin_login_attempts_email_idx on public.admin_login_attempts (email, created_at);
 create index if not exists admin_login_attempts_ip_idx    on public.admin_login_attempts (ip, created_at);
 
+-- Rate-limit log for the public "Track my order" page (identifier stored hashed).
+create table if not exists public.tracking_lookups (
+  id         bigint generated always as identity primary key,
+  ip         text,
+  key_hash   text not null,
+  created_at timestamptz not null default now()
+);
+create index if not exists tracking_lookups_ip_idx  on public.tracking_lookups (ip, created_at);
+create index if not exists tracking_lookups_key_idx on public.tracking_lookups (key_hash, created_at);
+
 -- RLS on, no policies: only the server (service-role key) can touch any of this.
 alter table public.couriers              enable row level security;
 alter table public.orders                enable row level security;
@@ -151,3 +165,4 @@ alter table public.contact_messages      enable row level security;
 alter table public.admin_users           enable row level security;
 alter table public.admin_sessions        enable row level security;
 alter table public.admin_login_attempts  enable row level security;
+alter table public.tracking_lookups      enable row level security;

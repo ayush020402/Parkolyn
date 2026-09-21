@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionForm } from "@/components/admin/useActionForm";
+import { useActionForm } from "@/components/useActionForm";
 import { STATUS_LABELS } from "@/lib/order-status";
 import { btnDanger, btnGhost, btnGold, btnPrimary, Field, Notice, inputCls } from "@/components/admin/ui";
 import {
