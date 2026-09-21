@@ -58,21 +58,34 @@ export default function Header() {
     >
       {/* Logo row */}
       <div className={`grid grid-cols-[1fr_auto_1fr] items-center container-px transition-all duration-300 ${scrolled ? "py-2.5" : "py-4"}`}>
-        <div />
+        <div className="flex items-center justify-start">
+          <button
+            className="text-ink lg:hidden"
+            aria-label="Toggle menu"
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              {mobileOpen ? (
+                <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+              )}
+            </svg>
+          </button>
+        </div>
 
-        <Link href="/" className="group flex items-center justify-center gap-3" onClick={() => setMobileOpen(false)}>
+        <Link href="/" className="group flex items-center justify-center" onClick={() => setMobileOpen(false)}>
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-3"
           >
-            <Image src="/brand/crest.png" alt="" width={200} height={200} quality={100} className={`object-contain transition-all duration-300 ${scrolled ? "h-8 w-8" : "h-10 w-10"}`} />
+            <Image src="/brand/crest-mark.png" alt="" width={200} height={200} quality={100} className={`object-contain transition-all duration-300 ${scrolled ? "h-9 w-9" : "h-12 w-12"}`} />
             <span className="flex flex-col items-start leading-none">
               <span className="font-brand text-2xl uppercase tracking-[0.06em] text-ink sm:text-3xl">Parkolyn</span>
-              <span className="mt-1.5 h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="mt-1.5 text-[8px] uppercase tracking-[0.35em] text-ink-dim sm:text-[9px]">Amsterdam</span>
+              <span className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.4em] text-ink-dim sm:text-[10px]">Amsterdam</span>
             </span>
           </motion.div>
         </Link>
@@ -98,24 +111,13 @@ export default function Header() {
               </motion.span>
             )}
           </button>
-
-          <button
-            className="text-ink lg:hidden"
-            aria-label="Toggle menu"
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              {mobileOpen ? (
-                <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" />
-              ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-              )}
-            </svg>
-          </button>
         </div>
       </div>
 
-      {/* Bold nav bar */}
+      {/* Red strip + thin gap, then the dark bar (nav links on desktop) */}
+      <div className="h-1.5 bg-crimson" />
+      <div className="h-[3px] bg-paper" />
+      <div className="h-2 bg-ink lg:hidden" />
       <nav className="hidden bg-ink lg:block">
         <div className="container-px flex items-center justify-center gap-10 py-3">
           {NAV_LINKS.map((link) => (

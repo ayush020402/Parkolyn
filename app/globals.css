@@ -10,6 +10,7 @@
   --color-gold: #96742a;
   --color-gold-light: #d4b876;
   --color-gold-deep: #6b5220;
+  --color-crimson: #b01232;
 }
 
 @theme inline {
@@ -22,6 +23,7 @@
   --color-gold: var(--color-gold);
   --color-gold-light: var(--color-gold-light);
   --color-gold-deep: var(--color-gold-deep);
+  --color-crimson: var(--color-crimson);
   --font-serif: var(--font-playfair);
   --font-brand: var(--font-brand);
   --font-sans: var(--font-inter);
