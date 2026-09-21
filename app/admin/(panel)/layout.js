@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdminLogo from "@/components/admin/AdminLogo";
 import AdminNav from "@/components/admin/AdminNav";
 import { requireAdmin } from "@/lib/admin/auth";
 import { getNavCounts } from "@/lib/admin/data";
@@ -15,9 +16,9 @@ export default async function PanelLayout({ children }) {
     <div className="mx-auto flex min-h-screen max-w-[1400px] flex-col lg:flex-row">
       <aside className="border-b border-stone-200 bg-white px-4 py-4 lg:sticky lg:top-0 lg:h-screen lg:w-60 lg:shrink-0 lg:border-b-0 lg:border-r lg:py-6">
         <div className="mb-4 flex items-center justify-between lg:mb-8 lg:block">
-          <Link href="/admin" className="block">
-            <span className="font-[family-name:var(--font-brand)] text-lg leading-none tracking-wide">Parkolyn Amsterdam</span>
-            <span className="mt-1 block text-[11px] font-medium uppercase tracking-[0.2em] text-gold">Admin</span>
+          <Link href="/admin" className="block" aria-label="Parkolyn Amsterdam admin — dashboard">
+            <AdminLogo />
+            <span className="mt-2 block text-[11px] font-medium uppercase tracking-[0.25em] text-gold">Admin panel</span>
           </Link>
           <form action={signOutAction} className="lg:hidden">
             <button className="text-xs font-medium text-stone-500 hover:text-ink">Sign out</button>
