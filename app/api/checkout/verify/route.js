@@ -44,6 +44,7 @@ export async function POST(request) {
     const { order, outcome } = await markOrderPaid({
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
+      source: "checkout",
     });
     if (order && outcome === "paid") {
       after(() => sendOrderEmailsOnce(order));

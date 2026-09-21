@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { formatINR } from "@/lib/products";
+import { INDIAN_STATES } from "@/lib/india";
 
 const SAVED_DETAILS_KEY = "parkolyn_checkout_details_v1";
 
@@ -22,7 +23,16 @@ function loadRazorpayScript() {
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", address: "", notes: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    notes: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [remembered, setRemembered] = useState(false);
@@ -48,8 +58,11 @@ export default function CheckoutPage() {
 
   function saveDetails() {
     try {
-      const { name, email, phone, address } = form;
-      window.localStorage.setItem(SAVED_DETAILS_KEY, JSON.stringify({ name, email, phone, address }));
+      const { name, email, phone, address, city, state, pincode } = form;
+      window.localStorage.setItem(
+        SAVED_DETAILS_KEY,
+        JSON.stringify({ name, email, phone, address, city, state, pincode })
+      );
     } catch {
       // ignore storage write failures (e.g. private browsing)
     }
@@ -87,7 +100,8 @@ export default function CheckoutPage() {
             contact: form.phone,
           },
           notes: {
-            address: form.address,
+            city: form.city,
+            pincode: form.pincode,
           },
           theme: { color: "#96742a" },
           handler: async function (response) {
@@ -189,7 +203,7 @@ export default function CheckoutPage() {
               className="input"
             />
           </Field>
-          <Field label="Shipping Address" required>
+          <Field label="Address (house no., street, area)" required>
             <textarea
               required
               rows={3}
@@ -198,6 +212,46 @@ export default function CheckoutPage() {
               className="input resize-none"
             />
           </Field>
+          <div className="grid gap-5 sm:grid-cols-3">
+            <Field label="City" required>
+              <input
+                required
+                value={form.city}
+                onChange={(e) => update("city", e.target.value)}
+                autoComplete="address-level2"
+                className="input"
+              />
+            </Field>
+            <Field label="State" required>
+              <select
+                required
+                value={form.state}
+                onChange={(e) => update("state", e.target.value)}
+                autoComplete="address-level1"
+                className="input"
+              >
+                <option value="">Select state</option>
+                {INDIAN_STATES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="PIN Code" required>
+              <input
+                required
+                inputMode="numeric"
+                pattern="[1-9][0-9]{5}"
+                maxLength={6}
+                title="6-digit PIN code"
+                value={form.pincode}
+                onChange={(e) => update("pincode", e.target.value.replace(/\D/g, ""))}
+                autoComplete="postal-code"
+                className="input"
+              />
+            </Field>
+          </div>
           <Field label="Order Notes (optional)">
             <textarea
               rows={2}

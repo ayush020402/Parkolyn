@@ -92,11 +92,14 @@ Every checkout now leaves a durable record and sends email:
    paths can fire). The contact form emails you and stores the message;
    newsletter signups are stored in `subscribers` and get a welcome email.
    If an email fails, the order still saves; find unsent ones with
-   `select * from orders where status = 'paid' and emails_sent_at is null`.
+   `select * from orders where payment_status = 'paid' and emails_sent_at is null`.
 
 ### One-time setup
 
-1. **Supabase** — create a project, open SQL Editor, run `supabase/schema.sql`.
+1. **Supabase** — create a project, open SQL Editor, run `supabase/schema.sql`
+   (fresh install). Already on the first version of the schema? Run
+   `supabase/migrations/002_admin_panel.sql` instead — it upgrades in place
+   (amounts paise → rupees, status split, courier tables, admin tables).
    Copy the project URL and the `service_role` key into `SUPABASE_URL` /
    `SUPABASE_SERVICE_ROLE_KEY`.
 2. **Resend** — create an API key (`RESEND_API_KEY`), verify your sending
@@ -110,6 +113,63 @@ Every checkout now leaves a durable record and sends email:
    Locally, expose the dev server with a tunnel (e.g. `ngrok http 3000`).
 4. Add all the variables from `.env.local.example` to your hosting provider
    (e.g. Vercel -> Project Settings -> Environment Variables) too.
+
+## Admin panel (`/admin`)
+
+A private back office for running the store: **orders, couriers & AWBs,
+contact messages, newsletter subscribers**.
+
+- **Orders** — every order with its items, customer, address, payment and a
+  timeline. Filter by status, payment, city, courier and date range, search by
+  order ref / name / email / phone / AWB, and export the current view to CSV.
+  Paid orders that still need shipping are highlighted on the dashboard.
+- **Fulfilment** — move an order through *Confirmed → Processing → Shipped →
+  Delivered* (or *Cancelled*). Invalid jumps are refused server-side; an unpaid
+  order can only be cancelled, and it becomes Confirmed by itself when Razorpay
+  confirms payment.
+- **Courier + AWB** — pick a courier from the **Couriers** master list, enter the
+  AWB, and mark the order shipped. The customer is emailed the courier, AWB and
+  (if the courier has a tracking-link template such as
+  `https://courier.example/track?no={awb}`) a tracking link. Orders keep the
+  courier name/link they shipped with, so editing the list never rewrites history.
+- **Refunds** — cancel a paid order, refund it in the Razorpay dashboard, then
+  mark it refunded here (the panel doesn't move money itself).
+- **Messages / Subscribers** — the contact-form inbox (mark handled, reply) and the
+  newsletter list (CSV export, remove).
+
+Money is stored in **rupees** (`orders.amount`); it is converted to paise only when
+talking to Razorpay.
+
+### Creating the first admin
+
+There is no public sign-up. Create accounts from the command line (needs
+`SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`):
+
+```bash
+npm run admin:create -- you@example.com            # generates a strong password and prints it once
+npm run admin:create -- you@example.com "12+ char passphrase" --name "Your Name"
+```
+
+Re-running it for an existing email resets that admin's password and signs out
+all their sessions. Sign in at `/admin`, then change the password under
+**Account**.
+
+### How it's secured
+
+- Passwords are hashed with scrypt; only the hash is stored.
+- Sessions are random 256-bit tokens in an HttpOnly, SameSite=Lax cookie
+  (`__Host-` prefixed and Secure in production). Only a SHA-256 of the token is
+  stored, so signing out, changing your password, or "Sign out other devices"
+  revokes sessions for real. They expire after 8 hours, or 2 hours idle.
+- Failed sign-ins are rate-limited per email (8) and per IP (12) per 15 minutes;
+  the error message never reveals whether an email exists.
+- Every admin page, Server Action and export re-checks the session against the
+  database — `proxy.js` is only an early redirect, not the security boundary.
+  Server Actions also enforce a same-origin check.
+- `/admin` is `noindex`, uncached and can't be framed. Customer-controlled text is
+  escaped in emails and neutralised in CSV exports (formula injection).
+- The database tables have Row Level Security on with no policies, so the public
+  Supabase key can read nothing; only the server's service-role key can.
 
 ## Deployment
 

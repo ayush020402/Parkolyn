@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getRazorpay } from "@/lib/razorpay";
 import { getProductBySlug } from "@/lib/products";
 import { createPendingOrder } from "@/lib/orders";
+import { INDIAN_STATES, PINCODE_RE } from "@/lib/india";
 
 // Creates a Razorpay order for the current cart and saves it in the database
 // as a "pending" order (items, address, amount). The client then opens
@@ -26,7 +27,15 @@ export async function POST(request) {
   if (!items || items.length === 0) {
     return NextResponse.json({ error: "Cart is empty." }, { status: 400 });
   }
-  if (!customer?.name || !customer?.email || !customer?.phone || !customer?.address) {
+  if (
+    !customer?.name ||
+    !customer?.email ||
+    !customer?.phone ||
+    !customer?.address ||
+    !customer?.city ||
+    !customer?.state ||
+    !customer?.pincode
+  ) {
     return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
   }
   const shipping = {
@@ -34,10 +43,19 @@ export async function POST(request) {
     email: clip(customer.email, 254).toLowerCase(),
     phone: clip(customer.phone, 30),
     address: clip(customer.address, 500),
+    city: clip(customer.city, 80),
+    state: clip(customer.state, 60),
+    pincode: clip(customer.pincode, 6),
     notes: clip(customer.notes, 1000),
   };
   if (!EMAIL_RE.test(shipping.email)) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+  }
+  if (!INDIAN_STATES.includes(shipping.state)) {
+    return NextResponse.json({ error: "Please choose your state from the list." }, { status: 400 });
+  }
+  if (!PINCODE_RE.test(shipping.pincode)) {
+    return NextResponse.json({ error: "Please enter a valid 6-digit PIN code." }, { status: 400 });
   }
 
   // Recompute the total server-side from the product catalogue — never
@@ -82,13 +100,16 @@ export async function POST(request) {
     await createPendingOrder({
       order_ref: orderId,
       razorpay_order_id: razorpayOrder.id,
-      amount_paise: amountInPaise,
+      amount: amountInPaise / 100, // stored in rupees; Razorpay itself works in paise
       currency: "INR",
       items: orderItems,
       customer_name: shipping.name,
       customer_email: shipping.email,
       customer_phone: shipping.phone,
       shipping_address: shipping.address,
+      shipping_city: shipping.city,
+      shipping_state: shipping.state,
+      shipping_pincode: shipping.pincode,
       notes: shipping.notes || null,
     });
 
