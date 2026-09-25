@@ -98,8 +98,9 @@ Every checkout now leaves a durable record and sends email:
 
 1. **Supabase** — create a project, open SQL Editor, run `supabase/schema.sql`
    (fresh install). Already on the first version of the schema? Run
-   `supabase/migrations/002_admin_panel.sql` instead — it upgrades in place
-   (amounts paise → rupees, status split, courier tables, admin tables).
+   the files in `supabase/migrations/` in order (`002`, `003`, `004`) instead —
+   they upgrade in place (amounts paise → rupees, status split, courier and admin
+   tables, order tracking) and are safe to re-run.
    Copy the project URL and the `service_role` key into `SUPABASE_URL` /
    `SUPABASE_SERVICE_ROLE_KEY`.
 2. **Resend** — create an API key (`RESEND_API_KEY`), verify your sending
@@ -113,6 +114,21 @@ Every checkout now leaves a durable record and sends email:
    Locally, expose the dev server with a tunnel (e.g. `ngrok http 3000`).
 4. Add all the variables from `.env.local.example` to your hosting provider
    (e.g. Vercel -> Project Settings -> Environment Variables) too.
+
+## Track my order (`/track`)
+
+Customers enter the email or Indian mobile number they used at checkout and see
+their paid orders: a progress bar, the items and total, and — once shipped — the
+courier, AWB and (if the courier has a tracking-link template) a link to track it.
+
+Because anyone can type any email or number, the page only ever returns the order
+reference, items, total, status and courier/AWB — never the address, contact
+details, notes or internal ids — and only for paid orders. It is rate-limited per IP
+(20), per email/number (10) and overall (400) per 15 minutes; it fails closed if the
+limiter can't run, and identifiers are stored only as SHA-256 hashes. The visitor's IP
+comes from a header the platform sets (`x-vercel-forwarded-for` on Vercel), never from a
+client-supplied `X-Forwarded-For`. To tighten it further, require the order number as
+well (or add an OTP once you can send SMS/verified email).
 
 ## Admin panel (`/admin`)
 

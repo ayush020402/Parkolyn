@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
-  const [website, setWebsite] = useState(""); // honeypot — bots fill it, people never see it
+  const [trap, setTrap] = useState(""); // honeypot — bots fill it, people never see it (odd name so autofill skips it)
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function Newsletter() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, website }),
+        body: JSON.stringify({ email, hp_x7c1e: trap }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
@@ -43,12 +43,13 @@ export default function Newsletter() {
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row">
           <input
             type="text"
-            name="website"
+            name="hp_x7c1e"
             tabIndex={-1}
             autoComplete="off"
+            data-1p-ignore data-lpignore="true" data-form-type="other"
             aria-hidden="true"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
+            value={trap}
+            onChange={(e) => setTrap(e.target.value)}
             className="absolute left-[-9999px] h-0 w-0 opacity-0"
           />
           <input

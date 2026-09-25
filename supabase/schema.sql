@@ -2,7 +2,7 @@
 -- Run this once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 --
 -- Already running the first version of the schema? Don't run this — run
--- supabase/migrations/002_admin_panel.sql and then 003_order_tracking.sql instead
+-- supabase/migrations/002_admin_panel.sql, 003_order_tracking.sql and 004_phone_key.sql instead
 -- (they upgrade in place).
 --
 -- Row Level Security is enabled with NO policies on purpose: the public
@@ -34,6 +34,21 @@ insert into public.couriers (name) values
 on conflict do nothing;
 
 -- ------------------------------------------------------------------ orders
+-- Normalises an Indian mobile number to its 10 digits ("+91 98111-11111" ->
+-- 9811111111); NULL for anything else. Powers "Track my order".
+-- KEEP IN SYNC with indianMobileKey() in lib/identifier.mjs.
+create or replace function public.phone_key(p text) returns text
+language sql immutable parallel safe as $$
+  select case
+    when d ~ '^[6-9][0-9]{9}$'       then d              -- 9811111111
+    when d ~ '^0[6-9][0-9]{9}$'      then substr(d, 2)   -- 09811111111
+    when d ~ '^91[6-9][0-9]{9}$'     then substr(d, 3)   -- +91 98111 11111
+    when d ~ '^0091[6-9][0-9]{9}$'   then substr(d, 5)   -- 0091 98111 11111
+    else null
+  end
+  from (select regexp_replace(coalesce(p, ''), '\D', '', 'g') as d) s
+$$;
+
 create table if not exists public.orders (
   id                  uuid primary key default gen_random_uuid(),
   order_ref           text not null unique,          -- customer-facing, e.g. PARK-MK3F9A-1B2C
@@ -52,8 +67,8 @@ create table if not exists public.orders (
   customer_name       text not null,
   customer_email      text not null,
   customer_phone      text not null,
-  customer_phone_key  text generated always as (right(regexp_replace(customer_phone, '\D', '', 'g'), 10)) stored,
-                                                     -- last 10 digits; lets "Track my order" match however the number was typed
+  customer_phone_key  text generated always as (public.phone_key(customer_phone)) stored,
+                                                     -- normalised mobile number; lets "Track my order" match however it was typed
   shipping_address    text not null,                 -- street / flat / landmark
   shipping_city       text,
   shipping_state      text,
@@ -155,6 +170,7 @@ create table if not exists public.tracking_lookups (
 );
 create index if not exists tracking_lookups_ip_idx  on public.tracking_lookups (ip, created_at);
 create index if not exists tracking_lookups_key_idx on public.tracking_lookups (key_hash, created_at);
+create index if not exists tracking_lookups_created_idx on public.tracking_lookups (created_at);
 
 -- RLS on, no policies: only the server (service-role key) can touch any of this.
 alter table public.couriers              enable row level security;

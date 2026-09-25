@@ -4,7 +4,7 @@ import { useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", hp_x7c1e: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -48,15 +48,17 @@ export default function ContactPage() {
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Honeypot — hidden from people, filled in by bots. */}
+            {/* Honeypot — hidden from people, filled in by bots. Its name is meaningless on
+                purpose so browsers and password managers never autofill it for a real visitor. */}
             <input
               type="text"
-              name="website"
+              name="hp_x7c1e"
               tabIndex={-1}
               autoComplete="off"
+              data-1p-ignore data-lpignore="true" data-form-type="other"
               aria-hidden="true"
-              value={form.website}
-              onChange={(e) => update("website", e.target.value)}
+              value={form.hp_x7c1e}
+              onChange={(e) => update("hp_x7c1e", e.target.value)}
               className="absolute left-[-9999px] h-0 w-0 opacity-0"
             />
             <label className="block">

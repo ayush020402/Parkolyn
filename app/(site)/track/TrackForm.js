@@ -179,8 +179,6 @@ export default function TrackForm() {
   return (
     <>
       <form onSubmit={onSubmit} className="flex max-w-xl flex-col gap-3 sm:flex-row">
-        {/* Honeypot — hidden from people, filled in by bots. */}
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
         <label className="flex-1">
           <span className="sr-only">Email address or mobile number</span>
           <input

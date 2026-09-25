@@ -16,8 +16,8 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  // Hidden "website" field: humans never fill it, bots do. Pretend success.
-  if (body?.website) return NextResponse.json({ ok: true });
+  // Hidden honeypot field: humans never fill it, bots do. Pretend success.
+  if (body?.hp_x7c1e) return NextResponse.json({ ok: true });
 
   const email = String(body?.email ?? "").trim().toLowerCase().slice(0, 254);
   if (!EMAIL_RE.test(email)) {
